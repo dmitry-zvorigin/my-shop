@@ -16,3 +16,14 @@ export const fetchTreeCategories = async () => {
   const response = await axios.get('http://localhost:8000/api/categories/tree?depth=4');
   return response.data;
 }
+
+export const fetchBrandAll = async () => {
+  const response = await axios.get('http://localhost:8000/api/brand');
+  return response.data;
+}
+
+export const fetchBrandBySlug = async (slug) => {
+  const response = await axios.get(`http://localhost:8000/api/brand/${slug}`);
+  return response.data;
+}
+
