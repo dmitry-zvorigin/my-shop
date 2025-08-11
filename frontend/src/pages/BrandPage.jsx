@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchBrandBySlug } from "../api/categories";
+import HorizontalScroller from "../components/common/HorizontalScroller";
+import { formatPrice } from "../utils/formatPrice";
+import ScrollToTopButton from "../components/common/ScrollToTopButton";
 
 export default function BrandPage() {
   const { slug } = useParams();
   const [brand, setBrand] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!slug) return;
 
-    fetchBrandBySlug(slug)
-      .then((data) => setBrand(data.data))
-      .catch((err) => console.error("Ошибка при загрузке бренда: ", err))
-      .finally(() => setLoading(false));
+  fetchBrandBySlug(slug)
+    .then((data) => {
+      setBrand(data.brand);
+      setCategories(data.categories);
+      setLatestProducts(data.latest_products);
+       // вот здесь
+    })
+    .catch((err) => console.error("Ошибка при загрузке бренда: ", err))
+    .finally(() => setLoading(false));
   }, [slug]);
 
   if (loading) {
@@ -25,8 +35,8 @@ export default function BrandPage() {
   }
 
   return (
-    <div className="grid gap-5">
-
+    <div className=" max-w-screen-2xl mx-auto gap-5 grid-cols-1 grid">
+      <ScrollToTopButton />
       <div className="flex justify-center items-center p-5">
         {brand.logo_url && (
           <img
@@ -36,43 +46,118 @@ export default function BrandPage() {
           />
         )}
       </div>
+      
+      {brand.test && (
+        <div className="grid grid-cols-7 gap-5">
+          {Array.from({ length: 13 }).map((_, index) => (
+            <div
+              key={index}
+              className="size-[200px] rounded-lg bg-white shadow"
+            >
+              {/* Содержимое блока */}
+            </div>
+          ))}
+            <button
+              className="size-[200px] rounded-lg bg-white shadow flex justify-center items-center"
+            >
+              Показать еще
+            </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-7 gap-5">
-        {Array.from({ length: 13 }).map((_, index) => (
-          <div
-            key={index}
-            className="size-[200px] rounded-lg bg-white shadow"
+        {categories.map((category) => (
+          <Link
+            key={category.id}
+            to={`/catalog/${category.slug}`}
+            className="size-[200px] rounded-lg bg-white shadow flex items-center justify-center hover:shadow-2xl transition"
           >
-            {/* Содержимое блока */}
-          </div>
+            <div className="p-4 flex flex-col text-center h-full justify-center items-center">
+              {category.image_url ? (
+                <img
+                  src={category.image_url}
+                  alt={category.name}
+                  className="object-contain mb-2"
+                />
+              ) : (
+                <div className="w-30 h-30 mb-2 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
+                  <span>Нет фото</span>
+                </div>
+              )}
+              <h3 className="text-sm font-medium">{category.name}</h3>
+            </div>
+
+          </Link>
         ))}
-          <button
-            className="size-[200px] rounded-lg bg-white shadow flex justify-center items-center"
-          >
-            Показать еще
-          </button>
       </div>
 
-      <div>
-        <h1 className="text-2xl mb-5 font-bold">Лучшие предложения</h1>
-        <div className="bg-white rounded-lg p-5">
+      {brand.test && (
+        <div>
+          <h1 className="text-2xl mb-5 font-bold">Лучшие предложения</h1>
+          <div className="bg-white rounded-lg p-5">
 
+          </div>
         </div>
-      </div>
+      )}
 
-      <div>
-        <h1 className="text-2xl mb-5 font-bold">Новинки</h1>
-        <div className="bg-white rounded-lg p-5">
+      {latestProducts.length > 0 && (
+        <div className="">
+          <h1 className="text-2xl font-bold">Новинки</h1>
+          <HorizontalScroller scrollStep={400}>
+            <div className="flex gap-5">
+              {latestProducts.map(product => (
+                <Link
+                  key={product.id}
+                  className="w-[300px] bg-white rounded-xl shadow hover:shadow-lg flex-none transition-all"
+                >
+                  <div className="p-5 flex flex-col h-full">
 
+                    {/* Фото товара */}
+                    <div className="h-[280px] flex items-center justify-center mb-4">
+                      {product.image_medium_url ? (
+                        <img
+                          src={product.image_medium_url}
+                          alt={product.name}
+                          className="max-h-full object-contain"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-100 rounded flex items-center justify-center text-gray-400 text-sm">
+                          Нет фото
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Название */}
+                    <h3 className="text-base line-clamp-2 mb-2 text-center hover:text-orange-400 transition">
+                      {product.name}
+                    </h3>
+
+                    {/* Цена + кнопка */}
+                    <div className="mt-auto flex items-center justify-between">
+                      <span className="font-bold text-2xl">{formatPrice(product.price)}</span>
+                      <button 
+                        className="px-4 py-2 bg-amber-500 bg-gradient-to-b from-orange-300 to-orange-400 hover:from-orange-400 hover:to-orange-500
+                        text-white rounded-lg text-base font-bold cursor-pointer transition w-[100px] h-[45px]"
+                      >
+                        Купить
+                      </button>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </HorizontalScroller>
         </div>
-      </div>
+      )}
       
-      <div>
-        <h1 className="text-2xl mb-5 font-bold">Отзывы на товары</h1>
-        <div className="bg-white rounded-lg p-5">
+      {brand.test && (
+        <div>
+          <h1 className="text-2xl mb-5 font-bold">Отзывы на товары</h1>
+          <div className="bg-white rounded-lg p-5">
 
+          </div>
         </div>
-      </div>
+      )}
 
       <div>
         <h1 className="text-2xl mb-5 font-bold">Сервисные центры</h1>
@@ -87,22 +172,23 @@ export default function BrandPage() {
         </div>
       </div>
 
-      <div>
-        <h1 className="text-2xl mb-5 font-bold">Обзоры</h1>
-        <div className="bg-white rounded-lg p-5">
+      {brand.reviews && (
+        <div>
+          <h1 className="text-2xl mb-5 font-bold">Обзоры</h1>
+          <div className="bg-white rounded-lg p-5">
 
+          </div>
         </div>
-      </div>
+      )}
 
-      <div>
-        <h1 className="text-2xl mb-5 font-bold">{brand.name}</h1>
-        <div className="bg-white rounded-lg p-5">
-          <p className="">
-            {brand.description}
-          </p>
+      {brand.description && (
+        <div>
+          <h1 className="text-2xl mb-5 font-bold">{brand.name}</h1>
+          <div className="bg-white rounded-lg p-5">
+            <p>{brand.description}</p>
+          </div>
         </div>
-      </div>
-
+      )}
     </div>
   );
   

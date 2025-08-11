@@ -27,16 +27,23 @@ class BrandSeeder extends Seeder
             ['name' => 'msi' , 'logo' => 'msi.png', 'description' => ''],
             ['name' => 'lg' , 'logo' => 'lg.png', 'description' => ''],
             ['name' => 'honor' , 'logo' => 'honor.png', 'description' => ''],
-            ['name' => 'asus' , 'logo' => 'asus.png', 'description' => ''],
+            ['name' => 'asus' , 'logo' => 'asus.png', 'description' => 'Свое название бренд ASUS получил от слова Pegasus (Пегас). Это имя крылатого коня из мифов Древней Греции. Основное направление работы тайваньской компании – выпуск компьютерной и цифровой техники. Свою работу она начала в 1989 году с производства материнских плат. Путь становления компания был непрост, встречалось немало проблем. ASUS производит не только готовые компьютеры, но и комплектующие для них. В том числе фирма делает это по заказу других корпораций, среди которых значатся Sony, HP, Alienware. Компания насчитывает 62 представительства по всему миру. Сейчас бренд ASUS принимает активное участие в создании и производстве цифровых устройств, обеспечивающих возможность учебы и работы из дома. Главным принципом компания провозглашает желание быть лидером цифровой сферы. Для этого она считает главными такие корпоративные ценности, как ориентация на результат, эстетика и инновационность, экономное мышление. В интернет-магазине DNS вы найдете множество устройств, произведенных под маркой ASUS.'],
             ['name' => 'gorenje' , 'logo' => 'gorenje.png', 'description' => ''],
             ['name' => 'palit' , 'logo' => 'palit.png', 'description' => ''],
             ['name' => 'polaris' , 'logo' => 'polaris.png', 'description' => ''],
             ['name' => 'indesit' , 'logo' => 'indesit.png', 'description' => ''],
+            ['name' => 'Amd' , 'logo' => 'amd.png', 'description' => ''],
+            ['name' => 'Intel' , 'logo' => 'intel.png', 'description' => ''],
+            ['name' => 'Acer' , 'logo' => 'acer.png', 'description' => ''],
+            ['name' => 'Gigabyte' , 'logo' => 'gigabyte.png', 'description' => ''],
+            ['name' => 'asrock' , 'logo' => 'asrock.png', 'description' => ''],
+            ['name' => 'sapphire' , 'logo' => 'sapphire.png', 'description' => ''],
+            ['name' => 'zotac' , 'logo' => 'zotac.png', 'description' => ''],
         ];
 
         foreach ($brands as $data) {
             Brand::create([
-                'name' => $data['name'],
+                'name' => ucfirst($data['name']),
                 'logo' => $data['logo'],
                 'description' => $data['description'],
             ]);

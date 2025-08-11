@@ -22,4 +22,10 @@ class Brand extends Model
     {
         return $this->logo ? asset('storage/brand-logo/' . $this->logo) : null;
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+    
 }
