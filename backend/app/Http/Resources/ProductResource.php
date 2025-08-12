@@ -24,9 +24,11 @@ class ProductResource extends JsonResource
             'image_medium_url' => $this->getImageUrl('medium'),
             'image_original_url' => $this->getImageUrl('original'),
             'image_thumb_url' => $this->getImageUrl('thumb'),
-            // 'images' => $this->images->mapWithKeys(function ($img) {
-            //     return [$img->size => asset('storage/' . $img->path)];
-            // }),
+            'images' => $this->images->groupBy('size')->map(function ($group) {
+                return $group->map(function ($img) {
+                    return asset('storage/' . $img->path);
+                });
+            }),
             'price' => $this->price,
             'stock_quantity' => $this->stock_quantity,
             'sort_order' =>  $this->sort_order,

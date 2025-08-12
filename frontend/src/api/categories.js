@@ -27,3 +27,9 @@ export const fetchBrandBySlug = async (slug) => {
   return response.data;
 }
 
+
+// Test Api
+export const fetchProductAll = async () => {
+  const response = await axios.get('http://localhost:8000/api/product/all');
+  return response.data;
+}

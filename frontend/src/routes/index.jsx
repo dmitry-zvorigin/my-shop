@@ -4,6 +4,7 @@ import HomePage from "../pages/HomePage";
 import MainLayout from "../layouts/MainLayout";
 import CategoryPage from "../pages/CategoryPage";
 import BrandPage from "../pages/BrandPage";
+import ProductsPage from "../pages/ProductsPage";
 
 export default function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ export default function AppRoutes() {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/catalog/:slug" element={<CategoryPage />} />
           <Route path="/brand/:slug" element={<BrandPage />} />
+          <Route path="/products/" element={<ProductsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

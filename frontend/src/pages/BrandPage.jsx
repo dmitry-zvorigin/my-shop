@@ -15,15 +15,15 @@ export default function BrandPage() {
   useEffect(() => {
     if (!slug) return;
 
-  fetchBrandBySlug(slug)
-    .then((data) => {
-      setBrand(data.brand);
-      setCategories(data.categories);
-      setLatestProducts(data.latest_products);
-       // вот здесь
-    })
-    .catch((err) => console.error("Ошибка при загрузке бренда: ", err))
-    .finally(() => setLoading(false));
+    fetchBrandBySlug(slug)
+      .then((data) => {
+        setBrand(data.brand);
+        setCategories(data.categories);
+        setLatestProducts(data.latest_products);
+        // вот здесь
+      })
+      .catch((err) => console.error("Ошибка при загрузке бренда: ", err))
+      .finally(() => setLoading(false));
   }, [slug]);
 
   if (loading) {
