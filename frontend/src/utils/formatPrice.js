@@ -1,3 +1,4 @@
+
 export function formatPrice (price) {
     return new Intl.NumberFormat("ru-RU", {
         style: "currency",

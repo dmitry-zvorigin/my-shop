@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import { fetchBrandBySlug } from "../api/categories";
 import HorizontalScroller from "../components/common/HorizontalScroller";
 import { formatPrice } from "../utils/formatPrice";
-import ScrollToTopButton from "../components/common/ScrollToTopButton";
 
 export default function BrandPage() {
   const { slug } = useParams();
@@ -36,7 +35,7 @@ export default function BrandPage() {
 
   return (
     <div className=" max-w-screen-2xl mx-auto gap-5 grid-cols-1 grid">
-      <ScrollToTopButton />
+
       <div className="flex justify-center items-center p-5">
         {brand.logo_url && (
           <img

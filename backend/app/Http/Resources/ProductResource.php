@@ -19,11 +19,11 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            // 'brand_id' => ?,
-            // 'category_id' => ?,
-            'image_medium_url' => $this->getImageUrl('medium'),
-            'image_original_url' => $this->getImageUrl('original'),
-            'image_thumb_url' => $this->getImageUrl('thumb'),
+            'brand' => new BrandResource($this->whenLoaded('brand')),
+            'category' => new CategoryResource($this->whenLoaded('category')),
+            // 'image_medium_url' => $this->getImageUrl('medium'),
+            // 'image_original_url' => $this->getImageUrl('original'),
+            // 'image_thumb_url' => $this->getImageUrl('thumb'),
             'images' => $this->images->groupBy('size')->map(function ($group) {
                 return $group->map(function ($img) {
                     return asset('storage/' . $img->path);

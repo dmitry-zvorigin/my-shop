@@ -52,7 +52,7 @@ export default function HorizontalScroller({ children, scrollStep = 300 }) {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative group"
+      className="relative group h-full"
     >
       {/* Левая кнопка */}
       {canScroll && (
@@ -70,7 +70,7 @@ export default function HorizontalScroller({ children, scrollStep = 300 }) {
       )}
 
       {/* Область скролла */}
-      <div ref={scrollRef} className="flex gap-5 overflow-x-hidden py-5">
+      <div ref={scrollRef} className="flex gap-5 overflow-x-hidden h-full">
         {children}
       </div>
 

@@ -3,6 +3,7 @@ import HeaderTop from '../components/HeaderTop';
 import HeaderMain from '../components/HeaderMain';
 import Footer from '../components/Footer';
 import BannerTop from '../components/BannerTop';
+import ScrollToTopButton from '../components/common/ScrollToTopButton';
 
 export default function MainLayout() {
   return (
@@ -19,6 +20,7 @@ export default function MainLayout() {
 
 
       <Footer />
+      <ScrollToTopButton/>
     </div>
   );
 }

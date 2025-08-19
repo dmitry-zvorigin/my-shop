@@ -3,7 +3,7 @@ export default function HeaderTop() {
 
     return (
     <div className="text-sm text-gray-700">
-      <div className="max-w-screen-2xl mx-auto flex justify-between items-center py-5">
+      <div className="container mx-auto flex justify-between items-center py-5">
         {/* Левая часть */}
         <div className="flex items-center gap-4 ">
           <span className="font-semibold hover:text-orange-500 text-gray-700 cursor-pointer">Екатеринбург</span>

@@ -19,3 +19,4 @@ Route::get('/categories/slug/{slug}', [CategoryController::class, 'showBySlug'])
 
 // Test api 
 Route::get('/product/all', [ProductController::class, 'showAll']);
+Route::get('/product/{slug}', [ProductController::class, 'showBySlug']);

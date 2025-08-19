@@ -2,7 +2,7 @@
 export default function Footer() {
   return (
     <footer className="bg-zinc-900 text-zinc-300 text-sm">
-      <div className="max-w-screen-2xl mx-auto  py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="container mx-auto py-10 grid grid-cols-2 md:grid-cols-4 gap-6">
         {/* Блок 1: Логотип */}
         <div>
           <h2 className="text-orange-500 font-bold text-xl mb-2">MyShop</h2>

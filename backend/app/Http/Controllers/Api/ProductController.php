@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -36,11 +37,25 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function showBySlug(string $slug, Product $product, ProductService $service)
     {
-        //
+        $product = $service->getBySlug($slug);
+        $product->load(['brand', 'category']);
+        return new ProductResource($product);
     }
 
+    // public function showBySlug(string $slug, BrandDetailService $service)
+    // {
+    //     $brand = $service->getBySlug($slug);
+    //     $categories = $service->getBrandCategories($brand);
+
+    //     return response()->json([
+    //         'brand' => new BrandResource($brand),
+    //         'categories' => CategoryResource::collection($categories),
+    //         'latest_products' => ProductResource::collection($service->getLatestBrandProducts($brand),
+    //         )
+    //     ]);
+    // }
     /**
      * Show the form for editing the specified resource.
      */

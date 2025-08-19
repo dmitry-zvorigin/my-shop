@@ -50,7 +50,7 @@ export default function HeaderMain () {
     <div className="sticky top-0 z-50 bg-white shadow">
       {/* Шапка */}
       <header className="top-0 z-50 h-[96px] flex items-center">
-        <div className="max-w-screen-2xl mx-auto flex items-center justify-between gap-4 w-full">
+        <div className="container mx-auto flex items-center justify-between gap-4 w-full">
           {/* Логотип + Каталог */}          
           <div className=' h-[64px] flex shadow-2xs rounded-lg'>
             <Link to="/" className="bg-gradient-to-b from-orange-300 to-orange-400 rounded-l-lg w-[120px] h-full flex justify-center items-center 
