@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchRootCategories } from '../api/categories';
-import CategoryCard from '../components/CategoryCard';
-import Breadcrumbs from "../components/Breadcrumbs";
+import Breadcrumbs from '@/components/Common/Breadcrumbs';
+import CategoryCard from '@/components/CategoryCard';
 
 export default function CatalogPage() {
   const [categories, setCategories] = useState([]);
@@ -16,7 +16,7 @@ export default function CatalogPage() {
 
       <h1 className="text-2xl font-bold mb-5">Каталог</h1>
 
-      <div className="grid grid-cols-5 gap-6">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-5">
         {categories.map((category) => (
           <CategoryCard
             key={category.id}

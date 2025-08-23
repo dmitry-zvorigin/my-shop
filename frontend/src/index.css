@@ -1,9 +1,21 @@
 @import "tailwindcss";
 
+@layer base {
+  button { @apply cursor-pointer; }
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE/старый Edge */
   scrollbar-width: none;     /* Firefox */
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;             /* Chrome, Safari, новый Edge */
+}
+
+@keyframes fade-in {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+.fade-in {
+  animation: fade-in 500ms ease; /* подстрой под FADE_MS */
 }

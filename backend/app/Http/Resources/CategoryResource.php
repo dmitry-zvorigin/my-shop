@@ -15,6 +15,7 @@ class CategoryResource extends JsonResource
             'slug' => $this->slug,
             'image_url' => $this->getImageUrl('thumb'),
             'children' => CategoryResource::collection($this->whenLoaded('children')),
+            'is_group' => $this->is_group,
         ];
     }
 }

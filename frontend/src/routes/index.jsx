@@ -1,11 +1,17 @@
+// routes/AppRoutes.jsx
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import CatalogPage from "../pages/CatalogPage";
-import HomePage from "../pages/HomePage";
-import MainLayout from "../layouts/MainLayout";
-import CategoryPage from "../pages/CategoryPage";
-import BrandPage from "../pages/BrandPage";
-import ProductsPage from "../pages/ProductsPage";
-import ProductPage from "../pages/ProductPage";
+import { lazy, Suspense } from "react";
+
+// НЕ ленивые: попадают в первый бандл
+import MainLayout from "@/layouts/MainLayout";
+
+// ЛЕНИВЫЕ страницы
+const HomePage     = lazy(() => import("@/pages/HomePage"));
+const CatalogPage  = lazy(() => import("@/pages/CatalogPage"));
+const CategoryPage = lazy(() => import("@/pages/CategoryPage"));
+const BrandPage    = lazy(() => import("@/pages/BrandPage"));
+const ProductsPage = lazy(() => import("@/pages/ProductsPage"));
+const ProductPage  = lazy(() => import("@/pages/ProductPage"));
 
 export default function AppRoutes() {
   return (
@@ -16,7 +22,7 @@ export default function AppRoutes() {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/catalog/:slug" element={<CategoryPage />} />
           <Route path="/brand/:slug" element={<BrandPage />} />
-          <Route path="/products/" element={<ProductsPage />} />
+          <Route path="/products" element={<ProductPage />} />
           <Route path="/product/:slug" element={<ProductPage />} />
         </Route>
       </Routes>

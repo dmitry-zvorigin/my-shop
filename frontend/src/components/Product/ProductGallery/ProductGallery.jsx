@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ThumbsColumn from "./ThumbsColumn";
 import MainImage from "./MainImage";
-import Lightbox from "./Lightbox";
+import ImageViewer from "./ImageViewer";
 
 function ProductGallery({
   images, 
@@ -20,8 +20,6 @@ function ProductGallery({
   const listRef = useRef(null);
 
   const active = medium[index] || medium[0] || "";
-  const canPrev = index > 0;
-  const canNext = index < original.length - 1;
 
   useEffect(() => {
     // предзагрузка соседей
@@ -59,17 +57,12 @@ function ProductGallery({
       />
 
       {isOpen && (
-        <Lightbox
-          src={original[index] || active}
+        <ImageViewer
+          images={original}          
+          thumbnails={thumbs}        
+          initialIndex={index}
           alt={alt}
           onClose={() => setOpen(false)}
-          onPrev={() => canPrev && select(index - 1)}
-          onNext={() => canNext && select(index + 1)}
-          canPrev={canPrev}
-          canNext={canNext}
-          thumbnails={thumbs}
-          currentIndex={index}
-          onSelect={select}
         />
       )}
     </div>

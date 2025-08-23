@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { FaHeart, FaShoppingCart, FaUser, FaSearch, FaBars } from 'react-icons/fa';
-import { FaCodeCompare } from "react-icons/fa6";
-import MegaMenu from './MegaMenu/MegaMenu';
+import { lazy, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ArrowPathRoundedSquareIcon, Bars3Icon, ChevronDownIcon, HeartIcon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
 import { fetchTreeCategories } from "@/api/categories";
+import Container from '../Shared/Container';
+
+const importMegaMenu = () => import('../MegaMenu/MegaMenu');
+const MegaMenu = lazy(importMegaMenu);
 
 export default function HeaderMain () {
   const [categories, setCategories] = useState([]);
@@ -49,12 +50,14 @@ export default function HeaderMain () {
   return (
     <div className="sticky top-0 z-50 bg-white shadow">
       {/* Шапка */}
+
       <header className="top-0 z-50 h-[96px] flex items-center">
-        <div className="container mx-auto flex items-center justify-between gap-4 w-full">
+        <Container>
+        <div className="flex items-center justify-between gap-4 w-full">
           {/* Логотип + Каталог */}          
           <div className=' h-[64px] flex shadow-2xs rounded-lg'>
             <Link to="/" className="bg-gradient-to-b from-orange-300 to-orange-400 rounded-l-lg w-[120px] h-full flex justify-center items-center 
-              hover:bg-gradient-to-b hover:from-orange-300 hover:to-orange-300 cursor-pointer">
+              hover:bg-gradient-to-b hover:from-orange-300 hover:to-orange-300">
               <span className='text-white font-bold text-xl '>
                 MyShop
               </span>
@@ -67,10 +70,10 @@ export default function HeaderMain () {
                   bg-gradient-to-b to-orange-350 from-orange-300 
                   rounded-lg 
                   text-white px-3 py-1
-                  hover:bg-gradient-to-b hover:to-orange-300 hover:from-orange-300 shadow-2xl
-                  cursor-pointer h-[45px]"
+                  hover:bg-gradient-to-b hover:to-orange-300 hover:from-orange-300
+                  h-[45px]"
               >
-                <FaBars />
+                <Bars3Icon width={25} />
                 <span className='font-bold'>Каталог</span>
                 <div 
                     className={`transform translate-transform duration-300 ${isMenuOpen ? 'rotate-180 transform' : ''}`}
@@ -83,29 +86,31 @@ export default function HeaderMain () {
 
           {/* Поиск */}
           <div className="flex-1">
-            <div className="relative ">
+            <div className="relative">
               <input
                 type="text"
                 placeholder="Поиск по сайту"
                 className="w-full border px-4 py-2 pr-10 focus:outline-orange-500 h-[64px] outline-none border-gray-200 hover:shadow hover:bg-white rounded-lg bg-gray-100"
               />
-              <FaSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <MagnifyingGlassIcon width={25} height={25} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer" />
             </div>
           </div>
 
           {/* Иконки */}
           <div className="flex items-center gap-6">
-            <HeaderIcon icon={<FaCodeCompare />} label="Сравнить" />
-            <HeaderIcon icon={<FaHeart />} label="Избранное" />
-            <HeaderIcon icon={<FaShoppingCart />} label="Корзина" />
-            <HeaderIcon icon={<FaUser />} label="Войти" />
+            <HeaderIcon icon={<ArrowPathRoundedSquareIcon width={25} height={25}/>} label="Сравнить" />
+            <HeaderIcon icon={<HeartIcon width={25} height={25} />} label="Избранное" />
+            <HeaderIcon icon={<ShoppingCartIcon width={25} height={25} />} label="Корзина" />
+            <HeaderIcon icon={<UserIcon width={25} height={25} />} label="Войти" />
           </div>
         </div>
+        </Container>
       </header>
 
       {isMenuOpen && (
         <MegaMenu categories={categories} onClose={() => setMenuOpen(false)} ref={menuRef}/>
       )}
+      
     </div>
   );
 }

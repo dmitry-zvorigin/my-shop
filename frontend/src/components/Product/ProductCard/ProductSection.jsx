@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import HorizontalScroller from "../../common/HorizontalScroller";
+import HorizontalScroller from "../../Common/HorizontalScroller";
 import { memo } from "react";
 
 function ProductSection({ open, hasImages, gallery, name }) {

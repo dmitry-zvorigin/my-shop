@@ -1,11 +1,10 @@
-import CategoryCard from '../components/CategoryCard';
-import Breadcrumbs from "../components/Breadcrumbs";
-import ProductList from '../components/Product/ProductList';
-import FiltersSidebar from '../components/Product/FiltersSidebar';
-import ToolBar from '../components/Product/Toolbar';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchProductAll } from '../api/categories';
+import { fetchProductAll } from '@/api/categories';
+import Breadcrumbs from '@/components/Common/Breadcrumbs';
+import FiltersSidebar from '@/components/Product/FiltersSidebar';
+import ToolBar from '@/components/Product/Toolbar';
+import ProductList from '@/components/Product/ProductList';
 
 export default function ProductsPage() {
   const [params, setParams] = useSearchParams();
@@ -36,7 +35,7 @@ export default function ProductsPage() {
       <h1 className="text-2xl font-bold mb-5">Продукты</h1>
 
       <div className='grid grid-cols-[350px_1fr] gap-5 mt-5'>
-        <FiltersSidebar/>
+        <FiltersSidebar />
 
         <div className=''>
           <ToolBar

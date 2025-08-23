@@ -15,4 +15,19 @@ class ProductService
     {
         return Product::where('slug', $slug)->firstOrFail();
     }
+
+    public function buildPath(Product $product): array
+    {
+        $service = app(CategoryDetailService::class);
+        $path = $service->buildPath($product->category);
+
+        $path[] = [
+            'id'   => $product->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'type' => 'product',
+        ];
+
+        return $path;
+    }
 }

@@ -4,7 +4,7 @@ export default function CategoryCard({ name, image, path = [], children = [], co
 
   if (compact) {
     return (
-      <Link to={`/catalog/${path}`} className="block aspect-square w-full">
+      <Link to={`/catalog/${path}`} className="block aspect-square">
         <div className="bg-white rounded-lg shadow hover:shadow-2xl transition p-4 flex flex-col items-center justify-center text-center h-full">
           {image ? (
             <img
@@ -24,7 +24,7 @@ export default function CategoryCard({ name, image, path = [], children = [], co
   }
 
   return (
-    <div className="block aspect-square w-full">
+    <div className="block aspect-square">
       <div className="group relative bg-white rounded-lg shadow hover:shadow-2xl transition overflow-hidden w-full h-full p-4 flex items-center justify-center text-center">
         <div className="group-hover:opacity-0 group-hover:scale-95 transition-all duration-300 ease-in-out flex flex-col items-center justify-center absolute inset-0 z-10">
           {image ? (

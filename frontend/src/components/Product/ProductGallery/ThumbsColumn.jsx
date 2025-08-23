@@ -22,7 +22,7 @@ function ThumbsColumn({
 
 
   return (      
-    <div className="relative py-2" style={{ height }}>
+    <div className="relative py-5" style={{ height }}>
 
       {canUp && (
         <button

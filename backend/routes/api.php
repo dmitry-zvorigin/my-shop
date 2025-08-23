@@ -16,6 +16,10 @@ Route::get('/brand/{slug}', [BrandController::class, 'showBySlug']);
 Route::get('/categories/tree', [CategoryController::class, 'tree']);
 Route::get('/categories/slug/{slug}', [CategoryController::class, 'showBySlug']);
 
+// Продукты по категории
+Route::get('/categories/{categorySlug}/products', [ProductController::class, 'getByCategory']);
+Route::get('/categories/{categorySlug}/metadata', [ProductController::class, 'getCategoryMetadata']);
+Route::get('/categories/{categorySlug}/filters', [ProductController::class, 'getCategoryFilters']);
 
 // Test api 
 Route::get('/product/all', [ProductController::class, 'showAll']);

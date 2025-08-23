@@ -38,6 +38,7 @@ class CategoryController extends Controller
                 'slug' => $category->slug,
                 'image_url' => $category->getImageUrl('thumb'),
                 'children' => CategoryResource::collection($mergedChildren),
+                'is_group' => $category->is_group,
             ],
             'path' => $service->buildPath($category),
         ]);

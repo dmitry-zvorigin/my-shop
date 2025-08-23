@@ -1,8 +1,10 @@
+import { fetchCategoryBySlug } from "@/api/categories";
+import CategoryCard from "@/components/CategoryCard";
+import Breadcrumbs from "@/components/Common/Breadcrumbs";
 import { useEffect, useState } from "react";
-import { fetchCategoryBySlug } from "../api/categories";
-import Breadcrumbs from "../components/Breadcrumbs";
-import CategoryCard from "../components/CategoryCard";
 import { useParams } from "react-router-dom";
+import ProductPage from "./ProductPage";
+import { CategoryView, ProductView } from "@/components/CategoryPage";
 
 export default function CategoryPage() {
   const { slug } = useParams();
@@ -32,26 +34,18 @@ export default function CategoryPage() {
   if (loading) return <div className="p-4">Загрузка...</div>;
   if (!category) return <div className="p-4 text-red-500">Категория не найдена</div>;
 
+  console.log(category);
   return (
       <div>
         <Breadcrumbs items={path} base={'/catalog'} />
         <h1 className="text-2xl font-bold mb-5">{category.name}</h1>
 
-        {category.children?.length > 0 ? (
-          <div className="grid grid-cols-5 gap-5">
-            {category.children.map((child) => (
-              <CategoryCard
-                key={child.id}
-                name={child.name}
-                image={child.image_url}
-                path={[child.slug]}
-                compact={true}
-              />
-            ))}
-          </div>
+        {category.is_group ? (
+          <CategoryView category={category} />
         ) : (
-          <p className="text-gray-500">Нет подкатегорий</p>
+          <ProductView categorySlug={category.slug} />
         )}
+
       </div>
   );
 }

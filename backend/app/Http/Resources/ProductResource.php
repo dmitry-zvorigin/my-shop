@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+// use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,10 +21,7 @@ class ProductResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'brand' => new BrandResource($this->whenLoaded('brand')),
-            'category' => new CategoryResource($this->whenLoaded('category')),
-            // 'image_medium_url' => $this->getImageUrl('medium'),
-            // 'image_original_url' => $this->getImageUrl('original'),
-            // 'image_thumb_url' => $this->getImageUrl('thumb'),
+            // 'category' => new CategoryResource($this->whenLoaded('category')),
             'images' => $this->images->groupBy('size')->map(function ($group) {
                 return $group->map(function ($img) {
                     return asset('storage/' . $img->path);
@@ -33,7 +31,8 @@ class ProductResource extends JsonResource
             'stock_quantity' => $this->stock_quantity,
             'sort_order' =>  $this->sort_order,
             'is_active' =>  $this->is_active,
-            'views' =>  $this->views
+            'views' =>  $this->views,
+            'path' => app(\App\Services\ProductService::class)->buildPath($this->resource),
         ];
     }
 }

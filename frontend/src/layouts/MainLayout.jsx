@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom';
-import HeaderTop from '../components/HeaderTop';
-import HeaderMain from '../components/HeaderMain';
-import Footer from '../components/Footer';
-import BannerTop from '../components/BannerTop';
-import ScrollToTopButton from '../components/common/ScrollToTopButton';
+import ScrollToTopButton from '@/components/Common/ScrollToTopButton';
+import { BannerTop, Footer, HeaderMain, HeaderTop } from '@/components/Widgets';
+import Container from '@/components/Shared/Container';
+import ContentSkeleton from '@/components/Shared/ContentSkeleton';
+import { Suspense } from 'react';
 
 export default function MainLayout() {
   return (
@@ -12,10 +12,12 @@ export default function MainLayout() {
       <HeaderTop />
       <HeaderMain />
 
-      <div className='bg-gray-100 flex-1'>
-        <main className="max-w-screen-2xl mx-auto w-full mb-5 mt-5">
-          <Outlet />
-        </main>
+      <div className="bg-gray-100 flex-1">
+        <Container size="2xl" className="my-5">
+          <Suspense fallback={<ContentSkeleton />}> 
+            <Outlet />
+          </Suspense>
+        </Container>
       </div>
 
 

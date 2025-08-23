@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ProductCard from "./ProductCard/ProductCard";
 import ProductCardSkeleton from "./ProductCard/ProductCardSkeleton";
+import clsx from "clsx";
 
 export default function ProductList({ items, loading, view }) {
   const [openId, setOpenId] = useState(null);
@@ -20,7 +21,10 @@ export default function ProductList({ items, loading, view }) {
   }
 
   return (
-    <div className={view === "grid" ? "grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3   gap-5" : "space-y-5"}>
+    <div 
+      className={clsx(
+        view === "grid" ? "grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5" : "space-y-5")}
+      >
       {items.map((product) => (
         <ProductCard           
           key={product.id}
