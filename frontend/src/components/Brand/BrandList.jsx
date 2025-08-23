@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
-import { fetchBrandAll } from "../../api/categories";
+// import { fetchBrandAll } from "../../api/categories";
 import { Link } from "react-router-dom";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import HorizontalScroller from "../Common/HorizontalScroller";
+import { fetchBrandAll } from "@/api/categories";
 
 export default function BrandList() {
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchBrandAll().then((data) => {
-      setBrands(data.data);
-    });
-  }, []);
 
   useEffect(() => {
     fetchBrandAll()

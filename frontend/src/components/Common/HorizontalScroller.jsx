@@ -70,7 +70,7 @@ export default function HorizontalScroller({ children, scrollStep = 300 }) {
       )}
 
       {/* Область скролла */}
-      <div ref={scrollRef} className="flex gap-5 overflow-x-hidden h-full">
+      <div ref={scrollRef} className="flex gap-5 overflow-x-hidden h-full py-5">
         {children}
       </div>
 
