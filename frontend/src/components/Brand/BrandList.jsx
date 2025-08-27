@@ -1,19 +1,42 @@
-import { useEffect, useState } from "react";
-// import { fetchBrandAll } from "../../api/categories";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import HorizontalScroller from "../Common/HorizontalScroller";
-import { fetchBrandAll } from "@/api/categories";
+import { getBrandAll } from "@/api/brand";
 
 export default function BrandList() {
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const currentRequestRef = useRef(null);
 
-  useEffect(() => {
-    fetchBrandAll()
-      .then((data) => setBrands(data.data))
-      .catch((err) => console.error("Ошибка при загрузке брендов: ", err))
-      .finally(() => setLoading(false));
-  }, [brands]);
+    useEffect(() => {    
+      const abortController = new AbortController();
+      const requestToken = {};
+      currentRequestRef.current = requestToken;
+    
+      setLoading(true);
+      setError(null);
+    
+      (async () => {
+        try {
+          const data = await getBrandAll({ signal: abortController.signal });
+          if (currentRequestRef.current !== requestToken) return;
+          setBrands(data.data);
+        } catch (err) {
+          if (err?.name !== 'AbortError') {
+            console.error('Ошибка при загрузке:', err);
+            if (currentRequestRef.current === requestToken) setError(err);
+          }
+        } finally {
+          if (currentRequestRef.current === requestToken) setLoading(false);
+        }
+      })();
+    
+      return () => {
+        currentRequestRef.current = null;
+        abortController.abort();
+      };
+    }, []);
 
   if (loading) {
     return <div className="p-5">Загрузка...</div>

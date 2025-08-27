@@ -10,7 +10,7 @@ export default function Breadcrumbs({ items = [], base = '', showHome = true }) 
       <ul className="flex flex-wrap items-center gap-2">
         {showHome && (
           <li key={"home"}>
-            <Link to="/" className="hover:text-orange-500 text-gray-700">Главная</Link>
+            <Link to="/" className="hover:text-orange-500 text-gray-700 text-[12px]">Главная</Link>
           </li>
         )}
 
@@ -18,9 +18,9 @@ export default function Breadcrumbs({ items = [], base = '', showHome = true }) 
           <li key={item.id || item.slug || index} className="flex items-center gap-2">
             <div><ChevronRightIcon className="w-4"/></div>
             {index === pathItems.length - 1 ? (
-              <span className="text-black font-semibold">{item.name}</span>
+              <span className="text-black font-semibold text-[12px]">{item.name}</span>
             ) : (
-              <Link to={item.url} className="hover:text-orange-500 text-gray-700">
+              <Link to={item.url} className="hover:text-orange-500 text-gray-700 text-[12px]">
                 {item.name}
               </Link>
             )}

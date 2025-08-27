@@ -43,7 +43,7 @@ export default function ProductView({ categorySlug }) {
   }
 
   return (
-    <div className='grid grid-cols-[350px_1fr] gap-5 mt-5'>
+    <div className='grid grid-cols-[250px_1fr] gap-5 mt-5'>
       
       <FiltersSidebar />
 

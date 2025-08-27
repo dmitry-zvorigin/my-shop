@@ -16,7 +16,7 @@ export default function CatalogPage() {
 
       <h1 className="text-2xl font-bold mb-5">Каталог</h1>
 
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-5">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-5">
         {categories.map((category) => (
           <CategoryCard
             key={category.id}

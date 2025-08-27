@@ -1,4 +1,4 @@
-import { lazy, useEffect, useRef, useState } from 'react';
+import { lazy, useEffect, useRef, useState, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowPathRoundedSquareIcon, Bars3Icon, ChevronDownIcon, HeartIcon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
 import { fetchTreeCategories } from "@/api/categories";
@@ -13,6 +13,11 @@ export default function HeaderMain () {
   const [hasFetched, setHasFetched] = useState(false);
   const menuButtonRef = useRef(null);
   const menuRef = useRef(null);
+
+  // Предзагрузка чанка мегаменю, чтобы клик не вызывал исчезновение хедера из-за Suspense
+  useEffect(() => {
+    importMegaMenu();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -108,7 +113,11 @@ export default function HeaderMain () {
       </header>
 
       {isMenuOpen && (
-        <MegaMenu categories={categories} onClose={() => setMenuOpen(false)} ref={menuRef}/>
+        <Suspense fallback={
+          <div className="absolute top-[96px] left-0 w-full bg-white shadow-2xl z-50 h-[calc(70vh)] border-t border-gray-200" />
+        }>
+          <MegaMenu categories={categories} onClose={() => setMenuOpen(false)} ref={menuRef}/>
+        </Suspense>
       )}
       
     </div>

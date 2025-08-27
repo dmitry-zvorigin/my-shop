@@ -1,24 +1,22 @@
 import { Link } from 'react-router-dom';
+import { NoImagePlaceholder } from './Common';
 
 export default function CategoryCard({ name, image, path = [], children = [], compact = false }) {
 
   if (compact) {
     return (
-      <Link to={`/catalog/${path}`} className="block aspect-square">
-        <div className="bg-white rounded-lg shadow hover:shadow-2xl transition p-4 flex flex-col items-center justify-center text-center h-full">
+      <Link
+        to={`/catalog/${path}`}
+        className="rounded-lg aspect-square bg-white shadow transition hover:shadow-2xl p-2 grid grid-rows-[1fr_auto] gap-2"
+      >
+        <div className="flex items-center justify-center">
           {image ? (
-            <img
-              src={image}
-              alt={name}
-              className="w-30 h-30 object-contain mb-2"
-            />
+            <img src={image} alt={name} className="max-h-full max-w-full object-contain" />
           ) : (
-            <div className="w-30 h-30 mb-2 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
-              <span>Нет фото</span>
-            </div>
+            <NoImagePlaceholder />
           )}
-          <h3 className="text-sm font-medium">{name}</h3>
         </div>
+        <h3 className="text-sm font-medium text-center">{name} Строительное оборудование и силовая техника</h3>
       </Link>
     );
   }

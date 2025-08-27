@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
-export default function TestHorizontalScroller({ children, scrollStep = 300 }) {
+export default function HorizontalScroller({ children, scrollStep = 300 }) {
   const scrollRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [atStart, setAtStart] = useState(false);
@@ -52,7 +52,7 @@ export default function TestHorizontalScroller({ children, scrollStep = 300 }) {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative group -my-5"
+      className="relative group h-full"
     >
       {/* Левая кнопка */}
       {canScroll && (
@@ -70,8 +70,8 @@ export default function TestHorizontalScroller({ children, scrollStep = 300 }) {
       )}
 
       {/* Область скролла */}
-      <div ref={scrollRef} className="flex gap-5 overflow-auto scrollbar-hide py-5">
-          {children}
+      <div ref={scrollRef} className="flex gap-5 overflow-x-hidden h-full py-5">
+        {children}
       </div>
 
       {/* Правая кнопка */}

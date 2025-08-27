@@ -8,6 +8,7 @@
   -ms-overflow-style: none;  /* IE/старый Edge */
   scrollbar-width: none;     /* Firefox */
 }
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;             /* Chrome, Safari, новый Edge */
 }
@@ -16,6 +17,19 @@
   from { opacity: 0 }
   to   { opacity: 1 }
 }
+
 .fade-in {
   animation: fade-in 500ms ease; /* подстрой под FADE_MS */
+}
+
+@theme {
+  --shadow-custom: 0 10px 5px -3px rgb(0 0 0 / 0.1), 0 0px 0px -4px rgb(0 0 0 / 0.1);
+}
+
+:root {
+  --screen-sm: 40rem;
+  --screen-md: 48rem;
+  --screen-lg: 64rem;
+  --screen-xl: 80rem;
+  --screen-2xl: 96rem;
 }

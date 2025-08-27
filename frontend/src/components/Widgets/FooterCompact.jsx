@@ -1,34 +1,36 @@
 import Container from "../Shared/Container";
 
-export default function Footer() {
+export default function FooterCompact() {
   return (
     <footer className="bg-zinc-900 text-zinc-300 text-sm">
       <Container>
-        <div className="py-10 grid grid-cols-4 gap-6">
+        <div className="py-10 grid grid-cols-1 gap-5">
           {/* Блок 1: Логотип */}
           <div>
             <h2 className="text-orange-500 font-bold text-xl mb-2">MyShop</h2>
             <p className="text-zinc-400">Интернет-магазин техники и электроники</p>
           </div>
 
-          {/* Блок 2: Компания */}
-          <div>
+          <div className="grid grid-cols-2">
+            {/* Блок 2: Компания */}
+            <div>
             <h3 className="text-white font-semibold mb-2">Компания</h3>
             <ul className="space-y-1">
-              <li><a href="#" className="hover:text-orange-500 ">О нас</a></li>
-              <li><a href="#" className="hover:text-orange-500 ">Новости</a></li>
-              <li><a href="#" className="hover:text-orange-500 ">Карьера</a></li>
+                <li><a href="#" className="hover:text-orange-500 ">О нас</a></li>
+                <li><a href="#" className="hover:text-orange-500 ">Новости</a></li>
+                <li><a href="#" className="hover:text-orange-500 ">Карьера</a></li>
             </ul>
-          </div>
+            </div>
 
-          {/* Блок 3: Покупателям */}
-          <div>
+            {/* Блок 3: Покупателям */}
+            <div>
             <h3 className="text-white font-semibold mb-2">Покупателям</h3>
             <ul className="space-y-1">
-              <li><a href="#" className="hover:text-orange-500 ">Доставка</a></li>
-              <li><a href="#" className="hover:text-orange-500 ">Гарантия</a></li>
-              <li><a href="#" className="hover:text-orange-500 ">Контакты</a></li>
+                <li><a href="#" className="hover:text-orange-500 ">Доставка</a></li>
+                <li><a href="#" className="hover:text-orange-500 ">Гарантия</a></li>
+                <li><a href="#" className="hover:text-orange-500 ">Контакты</a></li>
             </ul>
+            </div>
           </div>
 
           {/* Блок 4: Контакты */}
@@ -38,12 +40,12 @@ export default function Footer() {
             <p className="text-zinc-400">Email: support@myshop.ru</p>
           </div>
         </div>
-      </Container>
 
+
+      </Container>
       <div className="bg-zinc-800 text-center text-xs text-zinc-500 py-4">
         © {new Date().getFullYear()} MyShop. Все права защищены.
       </div>
     </footer>
-
   );
 }
