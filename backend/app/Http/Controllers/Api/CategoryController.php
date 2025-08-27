@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CategoryTreeResource;
 use App\Services\CategoryDetailService;
 use App\Services\CategoryTreeBuilder;
 use Illuminate\Http\Request;
@@ -15,7 +16,9 @@ class CategoryController extends Controller
         $depth = (int) $request->query('depth', 1);
         $tree = $treeBuilder->build($depth);
 
-        return response()->json($tree);
+        // return response()->json($tree);
+        return CategoryTreeResource::collection($tree)
+            ->additional(['meta' => ['depth' => $depth]]);
     }
 
     public function showBySlug(string $slug, CategoryDetailService $service)

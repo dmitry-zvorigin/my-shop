@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import { splitIntoColumns } from "../../utils/splitIntoColumns";
 import SubMenuItem from "./SubMenuItem";
 import Container from "../Shared/Container";
+import { useCategoriesTree } from "@/hooks/categoryQueries.";
 
-const MegaMenu = forwardRef(({ categories, onClose }, scrollContainerRef) => {
+const MegaMenu = forwardRef(({ onClose }, scrollContainerRef) => {
+  const { data: categories } = useCategoriesTree(4);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const isLoading = categories.length === 0;
   const timerRef = useRef(null);
 
   // Выбор категории по умолчанию
   useEffect(() => {
-    if (!selectedCategory && categories.length > 0) {
+    if (!selectedCategory && categories?.length > 0) {
       setSelectedCategory(categories[0]);
     }
   }, [categories, selectedCategory]);
@@ -31,20 +32,14 @@ const MegaMenu = forwardRef(({ categories, onClose }, scrollContainerRef) => {
       {/* Основное мегаменю */}
       <div
         ref={scrollContainerRef}
-        style={{ scrollbarGutter: 'stable' }}
-        className="absolute top-[96px] left-0 w-full bg-white shadow-2xl z-50 h-[calc(70vh)] overflow-y-auto border-t border-gray-200"
+        style={{ scrollbarGutter: 'stable both-edges' }}
+        className="absolute top-[96px] left-0 w-full bg-white shadow-2xl z-50 h-[calc(70vh)] overflow-y-scroll  border-t border-gray-200"
       >
-        <Container size="2xl">
-          <div className="flex gap-5 py-4 h-full">
+        <Container>
+          <div className="grid grid-cols-[306px_1fr] gap-4 py-5 h-full">
             {/* Левая колонка с категориями */}
-            <ul className="text-base w-72 shrink-0 h-full">
-              {isLoading
-                ? Array.from({ length: 10 }).map((_, idx) => (
-                    <li key={idx} className="p-3">
-                      <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse" />
-                    </li>
-                  ))
-                : categories.map((category) => (
+            <ul className="text-base shrink-0 h-full">
+              {categories?.map((category) => (
                     <li
                       key={category.id}
                       onMouseEnter={() => handleMouseEnter(category)}
@@ -66,25 +61,8 @@ const MegaMenu = forwardRef(({ categories, onClose }, scrollContainerRef) => {
             </ul>
 
             {/* Правая часть с подкатегориями */}
-            <div className="p-2 h-full w-full">
-              {isLoading ? (
-                <div className="grid grid-cols-1 gap-5">
-                  {Array.from({ length: 4 }).map((_, idx) => (
-                    <div key={idx}>
-                      <div className="h-5 w-60 bg-gray-200 rounded mb-3 animate-pulse" />
-                      <div className="grid grid-cols-3 gap-2">
-                        {Array.from({ length: 12 }).map((__, i) => (
-                          <div
-                            key={i}
-                            className="h-4 w-44 bg-gray-100 rounded animate-pulse"
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                selectedCategory?.children?.map((child) => (
+            <div className="h-full w-full">
+              {selectedCategory?.children?.map((child) => (
                   <div key={child.id} className="mb-5">
                     <Link
                       to={`/catalog/${child.slug}`}
@@ -110,7 +88,7 @@ const MegaMenu = forwardRef(({ categories, onClose }, scrollContainerRef) => {
                     </div>
                   </div>
                 ))
-              )}
+              }
             </div>
           </div>
         </Container>
@@ -120,3 +98,4 @@ const MegaMenu = forwardRef(({ categories, onClose }, scrollContainerRef) => {
 });
 
 export default MegaMenu;
+
