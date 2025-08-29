@@ -1,4 +1,4 @@
-import { fetchProductsByCategory } from "@/api/categories";
+// import { fetchProductsByCategory } from "@/api/categories";
 import { useEffect, useState } from "react";
 import ProductOverview from "../Product/ProductPage/ProductOverview";
 import FiltersSidebar from "../Product/FiltersSidebar";
@@ -17,22 +17,22 @@ export default function ProductView({ categorySlug }) {
   const view = params.get('view') || 'list';
   const page = Number(params.get('page') || 1);
 
-  useEffect(() => {
-    if (!categorySlug) return;
+  // useEffect(() => {
+  //   if (!categorySlug) return;
     
-    setLoading(true);
+  //   setLoading(true);
     
-    fetchProductsByCategory(categorySlug, {
-      page,
-      limit: 20, // или другое значение
-      sort,
-      order: 'desc', // или 'asc'
-      // group убрал, так как его нет в API
-    })
-      .then(res => setProducts(res.data))
-      .catch((err) => console.error("Ошибка при загрузке продуктов: ", err))
-      .finally(() => setLoading(false));
-  }, [categorySlug, sort, page]);
+  //   fetchProductsByCategory(categorySlug, {
+  //     page,
+  //     limit: 20, // или другое значение
+  //     sort,
+  //     order: 'desc', // или 'asc'
+  //     // group убрал, так как его нет в API
+  //   })
+  //     .then(res => setProducts(res.data))
+  //     .catch((err) => console.error("Ошибка при загрузке продуктов: ", err))
+  //     .finally(() => setLoading(false));
+  // }, [categorySlug, sort, page]);
 
   const onChangeSort = (v) => setParams(p => { p.set('sort', v); p.set('page', '1'); return p; });
   const onChangeGroup = (v) => setParams(p => { p.set("group", v); p.set("page", "1"); return p; });

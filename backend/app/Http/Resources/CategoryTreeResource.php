@@ -7,11 +7,12 @@ class CategoryTreeResource extends JsonResource
 {
     public function toArray($request)
     {
+        // dd($this->resource);
         return [
             'id'       => data_get($this->resource, 'id'),
             'slug'     => data_get($this->resource, 'slug'),
             'name'     => data_get($this->resource, 'name'),
-            'image'    => data_get($this->resource, 'image_url'),
+            'image_url'    => data_get($this->resource, 'image_url'),
             'children' => CategoryTreeResource::collection(
                 collect(data_get($this->resource, 'children', []))
             ),

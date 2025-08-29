@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import Container from '@/components/Shared/Container';
 import { lazy, Suspense } from 'react';
 import { useBreakpoint } from './useBreakpoint';
@@ -7,6 +7,8 @@ import { useBreakpoint } from './useBreakpoint';
 import BannerTopSkeleton from "@/components/Widgets/BannerTopSkeleton";
 import HeaderTopSkeleton from "@/components/Widgets/HeaderTopSkeleton";
 import HeaderMainSkeleton from "@/components/Widgets/HeaderMainSkeleton";
+import { ErrorBoundary } from 'react-error-boundary';
+import PageErrorFallback from '@/components/Shared/PageErrorFallback';
 
 // ленивые — чтобы реально не попадали в бандл на ненужных размерах
 const BannerTop = lazy(() => import("@/components/Widgets/BannerTop"));
@@ -19,6 +21,7 @@ const FooterCompact = lazy(() => import("@/components/Widgets/FooterCompact"));
 const ScrollToTopButton = lazy(() => import("@/components/Common/ScrollToTopButton"));
 
 export default function MainLayout() {
+  const location = useLocation();
   const { isMobile, isTablet, isDesktop } = useBreakpoint();
 
   return (
@@ -46,9 +49,11 @@ export default function MainLayout() {
 
       <div className="bg-gray-100 flex-1">
         <Container size="2xl" className="my-5">
-          <Suspense fallback={null}> 
-            <Outlet />
-          </Suspense>
+          <ErrorBoundary FallbackComponent={PageErrorFallback} resetKeys={[location.pathname]}>
+            <Suspense fallback={null}> 
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
         </Container>
       </div>
 

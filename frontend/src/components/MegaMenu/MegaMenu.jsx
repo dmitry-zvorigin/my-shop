@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { splitIntoColumns } from "../../utils/splitIntoColumns";
 import SubMenuItem from "./SubMenuItem";
 import Container from "../Shared/Container";
-import { useCategoriesTree } from "@/hooks/categoryQueries.";
+import { useCategoriesTree } from "@/hooks/categoryQueries";
 
 const MegaMenu = forwardRef(({ onClose }, scrollContainerRef) => {
   const { data: categories } = useCategoriesTree(4);
@@ -36,7 +36,7 @@ const MegaMenu = forwardRef(({ onClose }, scrollContainerRef) => {
         className="absolute top-[96px] left-0 w-full bg-white shadow-2xl z-50 h-[calc(70vh)] overflow-y-scroll  border-t border-gray-200"
       >
         <Container>
-          <div className="grid grid-cols-[306px_1fr] gap-4 py-5 h-full">
+          <div className="grid grid-cols-[320px_1fr] gap-5 py-5 h-full">
             {/* Левая колонка с категориями */}
             <ul className="text-base shrink-0 h-full">
               {categories?.map((category) => (

@@ -1,7 +1,4 @@
-import axios from 'axios';
 import { http } from './http';
-
-const API_URL = 'http://localhost:8000/api';
 
 // export const fetchRootCategories = async () => {
 //   const response = await axios.get('http://localhost:8000/api/categories/tree?depth=2');
@@ -73,5 +70,8 @@ const API_URL = 'http://localhost:8000/api';
 //   return response.data;
 // };
 
-export const fetchTreeCategories = ( depth = 4) => ({ signal }) =>
+export const fetchTreeCategories = ( depth = 2) => ({ signal }) =>
   http('categories/tree', { signal , searchParams: { depth }}); // ожидаем { data: [...] }
+
+export const fetchCategoryBySlug = (slug) => ({ signal }) =>
+  http(`categories/slug/${encodeURIComponent(slug)}`, { signal });

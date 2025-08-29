@@ -42,9 +42,9 @@ export default function HeaderMain () {
 
       <header className="top-0 z-50 h-[96px] flex items-center">
         <Container>
-        <div className="flex items-center justify-between gap-4 w-full">
+        <div className="flex items-center justify-between gap-5 w-full">
           {/* Логотип + Каталог */}          
-          <div className=' h-[64px] flex shadow-2xs rounded-lg'>
+          <div className='h-[64px] shadow-2xs rounded-lg w-80 grid grid-cols-[auto_1fr]'>
             <Link to="/" className="bg-gradient-to-b from-orange-300 to-orange-400 rounded-l-lg w-[120px] h-full flex justify-center items-center 
               hover:bg-gradient-to-b hover:from-orange-300 hover:to-orange-300">
               <span className='text-white font-bold text-xl '>
@@ -56,10 +56,10 @@ export default function HeaderMain () {
                 ref={menuButtonRef}
                 onClick={handleOpenMenu}
                 className="flex items-center gap-2 
-                  bg-gradient-to-b to-orange-350 from-orange-300 
+                  bg-gradient-to-b to-orange-400 from-orange-350 
                   rounded-lg 
                   text-white px-3 py-1
-                  hover:bg-gradient-to-b hover:to-orange-300 hover:from-orange-300
+                  hover:bg-gradient-to-b hover:to-orange-300 hover:from-orange-350 shadow transition
                   h-[45px]"
               >
                 <Bars3Icon width={25} />
@@ -86,7 +86,7 @@ export default function HeaderMain () {
           </div>
 
           {/* Иконки */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5">
             <HeaderIcon icon={<ArrowPathRoundedSquareIcon width={25} height={25}/>} label="Сравнить" />
             <HeaderIcon icon={<HeartIcon width={25} height={25} />} label="Избранное" />
             <HeaderIcon icon={<ShoppingCartIcon width={25} height={25} />} label="Корзина" />

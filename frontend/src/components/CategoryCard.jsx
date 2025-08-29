@@ -1,64 +1,75 @@
-import { Link } from 'react-router-dom';
-import { NoImagePlaceholder } from './Common';
+import clsx from "clsx";
+import { Link } from "react-router-dom";
+import NoImagePlaceholder from "@/components/Common/NoImagePlaceholder";
 
-export default function CategoryCard({ name, image, path = [], children = [], compact = false }) {
+export default function CategoryCard({
+  className,
+  name,
+  image,
+  path = [],
+  subcategories = [],   // <-- раньше children
+  compact = false,
+}) {
+  const hasOverlay = !compact && subcategories.length > 0;
+  const containerClasses = clsx(
+    "rounded-lg aspect-square bg-white shadow transition hover:shadow-2xl p-2 grid grid-rows-[1fr_auto] gap-2",
+    hasOverlay && "relative group",
+    className
+  );
 
-  if (compact) {
-    return (
-      <Link
-        to={`/catalog/${path}`}
-        className="rounded-lg aspect-square bg-white shadow transition hover:shadow-2xl p-2 grid grid-rows-[1fr_auto] gap-2"
-      >
-        <div className="flex items-center justify-center">
-          {image ? (
-            <img src={image} alt={name} className="max-h-full max-w-full object-contain" />
-          ) : (
-            <NoImagePlaceholder />
-          )}
-        </div>
-        <h3 className="text-sm font-medium text-center">{name} Строительное оборудование и силовая техника</h3>
-      </Link>
-    );
-  }
+  // В compact режиме оборачиваем всю карточку в Link.
+  // В режиме с оверлеем нельзя оборачивать всё в Link (внутри есть свои ссылки).
+  const Wrapper = compact ? Link : "div";
+  const to = compact ? `/catalog/${path}` : undefined;
 
   return (
-    <div className="block aspect-square">
-      <div className="group relative bg-white rounded-lg shadow hover:shadow-2xl transition overflow-hidden w-full h-full p-4 flex items-center justify-center text-center">
-        <div className="group-hover:opacity-0 group-hover:scale-95 transition-all duration-300 ease-in-out flex flex-col items-center justify-center absolute inset-0 z-10">
-          {image ? (
-            <img 
-              src={image}
-              alt={name}
-              className="w-30 h-30 object-contain mb-2"
-            />
-          ) : (
-            <div className="w-30 h-30 mb-2 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">
-              <span>Нет фото</span>
-            </div>
-          )}
-          <h3 className="text-sm font-medium">{name}</h3>
-        </div>
-
-        {children.length > 0 && (
-          <div className="opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 ease-in-out absolute inset-0 z-20 p-4 flex flex-col items-start justify-start text-left">
-            <Link to={`/catalog/${path}`} className='hover:text-orange-500'>
-              <h4 className="font-semibold mb-2 text-sm">{name}</h4>
-            </Link>
-            <ul className="text-xs text-gray-600 space-y-1 overflow-hidden">
-              {children.slice(0, 6).map((child) => (
-                <li key={child.id}>
-                  <Link
-                    to={`/catalog/${child.slug}`}
-                    className="hover:text-orange-500 text-gray-700 block"
-                  >
-                    {child.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+    <Wrapper to={to} className={containerClasses}>
+      {/* Верх: картинка */}
+      <div className={clsx(
+        "flex items-center justify-center",
+        hasOverlay && "transition-all ease-in-out group-hover:opacity-0"
+      )}>
+        {image
+          ? <img src={image} alt={name} className="max-h-full max-w-full object-contain" />
+          : <NoImagePlaceholder />
+        }
       </div>
-    </div>
+
+      {/* Низ: заголовок */}
+      <h3 className={clsx(
+        "text-sm font-bold text-gray-700 text-center line-clamp-3",
+        hasOverlay && "transition-all ease-in-out group-hover:opacity-0"
+      )}>
+        {name}
+      </h3>
+
+      {/* Оверлей на всю карточку (только если НЕ compact) */}
+      {hasOverlay && (
+        <div className="
+          absolute inset-0 z-20 rounded-lg
+          opacity-0 group-hover:opacity-100
+          transition-all ease-in-out
+          bg-white/95 p-4
+          flex flex-col items-start justify-start text-left
+        ">
+          <Link to={`/catalog/${path}`} className="hover:text-orange-500">
+            <h4 className="font-semibold mb-2 text-sm">{name}</h4>
+          </Link>
+
+          <ul className="text-xs text-gray-600 space-y-1 overflow-y-auto w-full">
+            {subcategories.slice(0, 6).map((child) => (
+              <li key={child.id}>
+                <Link
+                  to={`/catalog/${child.slug}`}
+                  className="hover:text-orange-500 text-gray-700 block"
+                >
+                  {child.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </Wrapper>
   );
 }

@@ -1,5 +1,3 @@
-// import BrandList from "@/components/Brand/BrandList";
-// import Breadcrumbs from "@/components/Common/Breadcrumbs";
 import { lazy, Suspense } from "react";
 
 const BrandList = lazy(() => import("@/components/Brand/BrandList"))
