@@ -21,6 +21,7 @@ class ProductResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'brand' => new BrandResource($this->whenLoaded('brand')),
+            'category' => new CategoryResource($this->whenLoaded('category')),
             // 'category' => new CategoryResource($this->whenLoaded('category')),
             'images' => $this->images->groupBy('size')->map(function ($group) {
                 return $group->map(function ($img) {

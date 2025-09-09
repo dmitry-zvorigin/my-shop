@@ -17,7 +17,11 @@ export default function ProductList({ items, loading, view }) {
   }
 
   if (items.length === 0) {
-    return <div className="p-5 text-red-500">Продуктов нет</div>;
+    return (
+      <div className="p-5 text-red-500 rounded-lg shadow bg-white flex justify-center items-center h-40 text-2xl font-medium">
+        Продуктов нет
+      </div>
+    );
   }
 
   return (

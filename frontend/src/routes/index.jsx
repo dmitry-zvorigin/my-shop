@@ -30,7 +30,7 @@ export default function AppRoutes() {
           } />
 
           <Route path="/catalog/:slug" element={
-            <Suspense fallback={<CatalogPageSkeleton />}>
+            <Suspense fallback={null}>
               <CategoryPage />
             </Suspense>
             

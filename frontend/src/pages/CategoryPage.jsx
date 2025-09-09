@@ -16,8 +16,7 @@ export default function CategoryPage() {
         {category.is_group ? (
           <CategoryView category={category} />
         ) : (
-          <></>
-          // <ProductView categorySlug={category.slug} />
+          <ProductView categorySlug={category.slug} />
         )}
 
       </div>

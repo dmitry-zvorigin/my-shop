@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import { createSearchParams, Link } from "react-router-dom";
 import NoImagePlaceholder from "@/components/Common/NoImagePlaceholder";
 
 export default function CategoryCard({
@@ -9,6 +9,7 @@ export default function CategoryCard({
   path = [],
   subcategories = [],   // <-- раньше children
   compact = false,
+  brandSlug = null,
 }) {
   const hasOverlay = !compact && subcategories.length > 0;
   const containerClasses = clsx(
@@ -20,7 +21,17 @@ export default function CategoryCard({
   // В compact режиме оборачиваем всю карточку в Link.
   // В режиме с оверлеем нельзя оборачивать всё в Link (внутри есть свои ссылки).
   const Wrapper = compact ? Link : "div";
-  const to = compact ? `/catalog/${path}` : undefined;
+  // const to = compact ? `/catalog/${path}?brand=${brandSlug}` : undefined;
+
+  const pathStr = Array.isArray(path) ? path.filter(Boolean).join("/") : String(path || "");
+  const to = compact
+    ? {
+        pathname: `/catalog/${pathStr}`,
+        search: brandSlug
+          ? `?${createSearchParams({ brand: String(brandSlug) }).toString()}`
+          : "",
+      }
+    : undefined;
 
   return (
     <Wrapper to={to} className={containerClasses}>

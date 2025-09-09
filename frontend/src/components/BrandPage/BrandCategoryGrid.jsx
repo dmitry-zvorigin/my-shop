@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import CategoryCard from "../CategoryCard";
 
-export default function BrandCategoryGrid({ categories }) {
+export default function BrandCategoryGrid({ categories, brandSlug }) {
   if (!categories?.length) return null;
 
   const visibleCategories = categories.slice(0, 11);
@@ -19,6 +19,7 @@ export default function BrandCategoryGrid({ categories }) {
           image={category.image_url}
           path={[category.slug]}
           compact={true}
+          brandSlug={brandSlug}
         />
       ))}
       {hasMore && (

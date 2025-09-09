@@ -1,5 +1,6 @@
+import HorizontalScroller from "@/components/Common/HorizontalScroller";
 import clsx from "clsx";
-import HorizontalScroller from "../../Common/HorizontalScroller";
+// import HorizontalScroller from "../Common/HorizontalScroller";
 import { memo } from "react";
 
 function ProductSection({ open, hasImages, gallery, name }) {
@@ -12,19 +13,20 @@ function ProductSection({ open, hasImages, gallery, name }) {
       open && hasImages ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
       )}
     >
-      <div className="flex items-center justify-start h-[200px]">
         <HorizontalScroller>
-          {gallery.map((src, idx) => (
-          <img
-            key={idx}
-            src={src}
-            alt={`${name} ${idx + 1}`}
-            className="max-h-full w-auto object-contain"
-            loading="lazy"
-          />
-          ))}
+          <div className="flex items-center justify-start h-[200px] gap-5">
+            {gallery.map((src, idx) => (
+              <img
+                key={idx}
+                src={src}
+                alt={`${name} ${idx + 1}`}
+                className="max-h-full w-auto object-contain"
+                loading="lazy"
+              />
+            ))}
+          </div>
         </HorizontalScroller>
-      </div>
+
     </section>
   );
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\ProductFilterDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\ProductQueryService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
@@ -13,9 +15,13 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, ProductQueryService $service)
     {
-        //
+        $dto = ProductFilterDTO::fromRequest($request);
+        $paginate = $service->paginate($dto);
+
+        return ProductResource::collection($paginate)
+            ->additional(['meta' => ['total' => $paginate->total()]]);
     }
 
     /**

@@ -11,13 +11,13 @@ export default function BrandLatestProducts({ products }) {
       <HorizontalScroller >
         <div className="flex gap-5">
           {products.map((p) => (
-                <BrandProductCardMini 
-                  key={p.id}
-                  name={p.name}
-                  slug={p.slug}
-                  image={p.images?.medium?.[0] ?? null}
-                  priceText={formatPrice(p.price)}
-                />
+            <BrandProductCardMini 
+              key={p.id}
+              name={p.name}
+              slug={p.slug}
+              image={p.images?.medium?.[0] ?? null}
+              priceText={formatPrice(p.price)}
+            />
           ))}
         </div>
       </HorizontalScroller>

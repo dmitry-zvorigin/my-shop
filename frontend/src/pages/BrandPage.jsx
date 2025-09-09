@@ -24,7 +24,7 @@ export default function BrandPage() {
 
       <BrandHero brand={brand}/>
       
-      <BrandCategoryGrid categories={categories} />
+      <BrandCategoryGrid categories={categories} brandSlug={brand.slug}/>
 
       <BrandLatestProducts products={latestProducts} />
       

@@ -13,3 +13,15 @@ import { http } from "./http";
 export function getProductBySlug(slug, opts = {}) {
   return http(`product/${encodeURIComponent(slug)}`, opts);
 }
+
+// export async function fetchProducts(params = {}, options = {}) {
+//   const query = new URLSearchParams(params).toString();
+//   const path = query ? `products?${query}` : "products";
+//   return http(path, options);
+// }
+
+export function fetchProducts(params = {}, opts = {}) {
+  const query = new URLSearchParams(params).toString();
+  const path = query ? `products?${query}` : "products";
+  return http(path, opts);
+}
