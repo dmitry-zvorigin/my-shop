@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ProductCard from "./ProductCard/ProductCard";
-import ProductCardSkeleton from "./ProductCard/ProductCardSkeleton";
+import ProductCard from "../ProductCard/ProductCard";
+import ProductCardSkeleton from "../ProductCard/ProductCardSkeleton";
 import clsx from "clsx";
 
 export default function ProductList({ items, loading, view }) {

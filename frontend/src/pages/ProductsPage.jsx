@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { fetchProductAll } from '@/api/categories';
 import Breadcrumbs from '@/components/Common/Breadcrumbs';
 import FiltersSidebar from '@/components/Product/Filter/FiltersSidebar';
-import ToolBar from '@/components/Product/Toolbar';
-import ProductList from '@/components/Product/ProductList';
+import ToolBar from '@/components/Product/Toolbar/Toolbar';
+import ProductList from '@/components/Product/ProductList/ProductList';
 
 export default function ProductsPage() {
   const [params, setParams] = useSearchParams();

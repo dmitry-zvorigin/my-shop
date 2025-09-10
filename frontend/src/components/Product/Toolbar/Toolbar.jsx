@@ -1,5 +1,5 @@
 import { Bars3Icon, Squares2X2Icon } from "@heroicons/react/24/outline";
-import DropdownSelect from "../ui/DropdownSelect";
+import DropdownSelect from "../../ui/DropdownSelect";
 
 const SORT_OPTIONS = [
   { value: "price_asc",  label: "Сначала недорогие" },
