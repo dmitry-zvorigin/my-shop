@@ -1,6 +1,7 @@
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 
-export default function FiltersSearch({ value, onChange, show }) {
+export default function FiltersSearch({ value, onChange, show, className, placeholder }) {
   if (!show) return null;
   return (
     <div className="px-3 my-2">
@@ -9,8 +10,8 @@ export default function FiltersSearch({ value, onChange, show }) {
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Поиск"
-          className="text-sm w-full rounded-lg bg-gray-100 px-3 py-2 pl-10 pr-10 outline-none"
+          placeholder={placeholder ? placeholder : "Поиск" }
+          className={clsx("text-sm w-full rounded-lg bg-gray-100 px-3 py-2 pl-10 pr-10 outline-none", className)}
         />
         <MagnifyingGlassIcon className="size-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         {value.trim().length > 0 && (

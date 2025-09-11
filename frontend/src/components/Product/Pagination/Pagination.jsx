@@ -86,7 +86,7 @@ export default function Pagination({ currentPage, lastPage, setCurrentPage }) {
 					className='
 						relative inline-flex items-center rounded-l-md justify-center 
 						text-gray-400 focus:z-20 focus:outline-offset-0
-						hover:bg-orange-400 hover:text-white h-full w-[50px] transition
+						hover:bg-orange-50 hover:text-orange-500 h-full w-[50px] transition
 					'
 					onClick={(e) => {
 						e.preventDefault();
@@ -103,7 +103,7 @@ export default function Pagination({ currentPage, lastPage, setCurrentPage }) {
 					className="
 						relative inline-flex items-center justify-center
 						text-gray-400 focus:z-20 focus:outline-offset-0
-						hover:bg-orange-400 hover:text-white h-full w-[50px] transition
+						hover:bg-orange-50 hover:text-orange-500 h-full w-[50px] transition
 					"
 					onClick={(e) => {
 						e.preventDefault();
@@ -122,7 +122,7 @@ export default function Pagination({ currentPage, lastPage, setCurrentPage }) {
 					className="
 						relative inline-flex items-center justify-center
 						text-gray-400 focus:z-20 focus:outline-offset-0
-						hover:bg-orange-400 hover:text-white h-full w-[50px] transition
+						hover:bg-orange-50 hover:text-orange-500 h-full w-[50px] transition
 					"
 					onClick={(e) => {
 						e.preventDefault();
@@ -139,7 +139,7 @@ export default function Pagination({ currentPage, lastPage, setCurrentPage }) {
 					className="
 						relative inline-flex items-center rounded-r-md justify-center
 						text-gray-400 focus:z-20 focus:outline-offset-0
-						hover:bg-orange-400 hover:text-white h-full w-[50px] transition
+						hover:bg-orange-50 hover:text-orange-500 h-full w-[50px] transition
 					"
 					onClick={(e) => {
 						e.preventDefault();
