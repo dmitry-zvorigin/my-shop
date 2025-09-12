@@ -1,11 +1,26 @@
-import { useEffect, useRef } from "react";
+import clsx from "clsx";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-export default function FiltersModal({ open, onClose, title, children, initialFocusRef, groups, renderGroups }) {
+export default function FiltersModal({ open, onClose, title, initialFocusRef, groups = [], filters=[], renderFilter }) {
 
   const lastActiveRef = useRef(null);
   const overlayRef = useRef(null);
   
+  const groupsSorted = [...groups].sort((a,b)=>(a.order??0)-(b.order??0));
+
+  const filtersByGroup = useMemo(() => {
+    const acc = {};
+    filters
+      .filter(f => (f.showIn?.includes("modal") ?? true))
+      .sort((a,b) => (a.order ?? 0) - (b.order ?? 0))
+      .forEach(f => {
+        const ids = Array.isArray(f.groupIds) ? f.groupIds : [f.groupId];
+        ids.forEach(gid => (acc[gid] ||= []).push(f));
+      });
+    return acc;
+  }, [filters]);
+
   // ESC закрытие
   useEffect(() => {
     if (!open) return;
@@ -33,9 +48,47 @@ export default function FiltersModal({ open, onClose, title, children, initialFo
     };
   }, [open, initialFocusRef]);
 
-  if (!open) return null;
+
+  // --- refs для прокрутки
+  const rightPaneRef = useRef(null);              // скроллируемый контейнер справа
+  const sectionRefs = useRef({});                 // { [groupId]: HTMLElement }
+  const [activeGroupId, setActiveGroupId] = useState(groupsSorted[0]?.id);
+
+  const scrollToGroup = (gid) => {
+    const container = rightPaneRef.current;
+    const el = sectionRefs.current[gid];
+    if (!container || !el) return;
+    // точный скролл относительно контейнера (учитывает padding)
+    const top = el.offsetTop - container.offsetTop;
+    container.scrollTo({ top, behavior: "smooth" });
+    setActiveGroupId(gid);
+  };
+
+  // scroll-spy: подсветка активной группы при прокрутке справа
+  useEffect(() => {
+    const root = rightPaneRef.current;
+    if (!root) return;
+    const onScroll = () => {
+      const st = root.scrollTop;
+      let bestId, bestDist = Infinity;
+      groupsSorted.forEach(g => {
+        const gid = g.id;
+        const el = sectionRefs.current[gid];
+        if (!el) return;
+        const top = el.offsetTop - root.offsetTop;
+        const dist = Math.abs(top - st);
+        if (dist < bestDist) { bestDist = dist; bestId = gid; }
+      });
+      if (bestId) setActiveGroupId(bestId);
+    };
+    root.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(); // первичная инициализация
+    return () => root.removeEventListener("scroll", onScroll);
+  }, [groupsSorted]);
 
   const labelId = title ? "modal-title-" + String(title).replace(/\s+/g, "-") : undefined;
+
+  if (!open) return null;
 
   return createPortal(
     <div
@@ -68,18 +121,26 @@ export default function FiltersModal({ open, onClose, title, children, initialFo
         </div>
 
         <div className="flex-1 overflow-hidden">
-          {children ? (
+          {/* {children ? (
             <div className="h-full">{children}</div>
-          ) : (
-            <div className="grid grid-cols-[auto_1fr] gap-5 h-full p-5">
+          ) : ( */}
+            <div className="grid grid-cols-[350px_auto_1fr] h-full">
 
               <div className="min-h-0">
                 <div className="h-full min-h-0 flex flex-col">
-                  <div className="min-h-0 overflow-auto">
-                    {(groups ?? []).map((g) => (
-                      <div key={g.id ?? g.title} className="py-2 px-2 cursor-pointer">{g.title}</div>
+                  <aside className="min-h-0 overflow-auto flex flex-col" style={{ scrollbarGutter: "stable" }}>
+                    {(groupsSorted ?? []).map((g) => (
+                      <button 
+                        key={g.id ?? g.title} 
+                        onClick={() => scrollToGroup(g.id)} 
+                        className={clsx(" text-left block w-full rounded-md transition relative py-5 px-10", 
+                          activeGroupId == g.id ? 'text-orange-600 font-medium before:absolute before:border-2 before:h-full before:left-0 before:top-0' : '' 
+                        )}
+                      >
+                        {g.title}
+                      </button>
                     ))}
-                  </div>
+                  </aside>
 
                   <div className="mt-5 flex flex-col gap-2 mx-5">
                     <button
@@ -102,21 +163,32 @@ export default function FiltersModal({ open, onClose, title, children, initialFo
                 </div>
               </div>
 
-              <div className="min-h-0 overflow-auto">
-                {(groups ?? []).map((g) => (
-                  <div>
-                    <h2 key={g.id ?? g.title} className="py-2 px-2 text-xl font-medium">{g.title}</h2>    
+              <div className="border-l-[1px] my-2 border-gray-300 mx-2"/>
+
+              <main 
+                ref={rightPaneRef}
+                className="min-h-0 overflow-auto grid gap-5 p-3" 
+                style={{ scrollbarGutter: "stable" }}
+              >
+                {(groupsSorted ?? []).map((g) => (
+                  <section 
+                    key={g.id} 
+                    data-gid={g.id} 
+                    ref={(el) => {
+                      if (el) sectionRefs.current[g.id] = el;
+                      else delete sectionRefs.current[g.id];
+                    }}
+                    className="grid gap-5 scroll-mt-4"
+                  >
+                    <h2 className="py-2 px-2 text-xl font-medium">{g.title}</h2>    
                     <div className="grid grid-cols-2">
-                      {/* Сюда должны быть опции определенной группы */}
+                       {(filtersByGroup[g.id] ?? []).map(f => renderFilter(f))}
                     </div>
-                  </div>
-                  
-                  
+                  </section>
                 ))}
-                {renderGroups}
-              </div>
+              </main>
             </div>
-          )}
+          {/* )} */}
         </div>
       </div>
     </div>,

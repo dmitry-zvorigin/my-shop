@@ -13,15 +13,15 @@ export default function FiltersContainer({q, patchQuery}) {
 
   // const { data } = useFilters(params); // ← запрос стартует сразу
   const groups = [
-    { id: 1,  title: "Основные", order: 1 },
-    { id: 2, title: "Рейтинг и обзоры", order: 2},
-    { id: 3, title: "Общие параметры", order: 3,},
-    { id: 4, title: "Ядро и архитектура", order: 4},
-    { id: 5, title: "Частота и возможность разгона", order: 5},
-    { id: 6, title: "Параметры оперативной памяти", order: 6},
-    { id: 7, title: "Тепловые характеристики", order: 7},
-    { id: 8, title: "Графическое ядро", order: 8},
-    { id: 9, title: "Шина и контроллеры", order: 9},
+    { id: '1',  title: "Основные", order: 1 },
+    { id: '2', title: "Рейтинг и обзоры", order: 2},
+    { id: '3', title: "Общие параметры", order: 3,},
+    { id: '4', title: "Ядро и архитектура", order: 4},
+    { id: '5', title: "Частота и возможность разгона", order: 5},
+    { id: '6', title: "Параметры оперативной памяти", order: 6},
+    { id: '7', title: "Тепловые характеристики", order: 7},
+    { id: '8', title: "Графическое ядро", order: 8},
+    { id: '9', title: "Шина и контроллеры", order: 9},
   ];
 
   const filters = [
@@ -39,7 +39,7 @@ export default function FiltersContainer({q, patchQuery}) {
     },
     {
       title: "Гарантия",
-      value: 1,
+      value: 'Guarantee',
       order: 2,
       groupId: 1,
       options: [
@@ -139,31 +139,52 @@ export default function FiltersContainer({q, patchQuery}) {
     },
   ];
 
-  const renderGroups = (variant) =>
-    filters.map((filter) => {
-      const selected = toArray(q[filter.value]);
-      const handleChange = (nextArr) => {
-        patchQuery({
-          [filter.value]: nextArr.length ? nextArr : undefined,
-          page: 1,
-        });
-      };
+  // const renderGroups = (variant) =>
+  //   filters.map((filter) => {
+  //     const selected = toArray(q[filter.value]);
+  //     const handleChange = (nextArr) => {
+  //       patchQuery({
+  //         [filter.value]: nextArr.length ? nextArr : undefined,
+  //         page: 1,
+  //       });
+  //     };
 
-      return (
-        <FiltersSidebar
-          key={filter.value}
-          title={filter.title}
-          options={filter.options}
-          value={selected}
-          onChange={handleChange}
-          defaultOpen={variant === "sidebar" ? false : selected.length > 0}
-          maxCollapsed={variant === "sidebar" ? 7 : 12}
-          showApplyAtEl={variant === "sidebar" ? showApplyAtEl : undefined}
-        />
-      );
-    });
+  //     return (
+  //       <FiltersSidebar
+  //         key={filter.value}
+  //         title={filter.title}
+  //         options={filter.options}
+  //         value={selected}
+  //         onChange={handleChange}
+  //         defaultOpen={variant === "sidebar" ? false : selected.length > 0}
+  //         maxCollapsed={7}
+  //         showApplyAtEl={variant === "sidebar" ? showApplyAtEl : undefined}
+  //       />
+  //     );
+  //   });
 
+  const renderFilter = (filter, variant = "sidebar") => {
+    const selected = toArray(q[filter.value]);
+    const handleChange = (nextArr) => {
+      patchQuery({
+        [filter.value]: nextArr.length ? nextArr : undefined,
+        page: 1,
+      });
+    };
 
+    return (
+      <FiltersSidebar
+        key={filter.value}
+        title={filter.title}
+        options={filter.options}
+        value={selected}
+        onChange={handleChange}
+        defaultOpen={variant === "sidebar" ? false : selected.length > 0}
+        maxCollapsed={7}
+        showApplyAtEl={variant === "sidebar" ? showApplyAtEl : undefined}
+      />
+    );
+  };
 
   return (
     <div ref={wrapRef} className="relative gap-5 grid">
@@ -236,7 +257,8 @@ export default function FiltersContainer({q, patchQuery}) {
         onClose={() => setIsAllFiltersOpen(false)}
         title="Все фильтры"
         groups={groups}
-        renderGroups={renderGroups("modal")}
+        filters={filters}
+        renderFilter={(f) => renderFilter(f, "modal")}
       />
     </div>
   );
