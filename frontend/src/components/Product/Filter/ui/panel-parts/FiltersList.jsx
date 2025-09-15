@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import AnimatedCheckbox from "../../ui/AnimatedCheckbox";
+import AnimatedCheckbox from "../primitives/AnimatedCheckbox";
 
 export default function FiltersList({
   listRef,

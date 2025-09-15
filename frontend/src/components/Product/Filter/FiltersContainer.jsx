@@ -1,16 +1,19 @@
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { ApplyFiltersButton, FiltersSearch } from ".";
-import useFloatingApplyAnchor from "./useFloatingApplyAnchor";
+import useFloatingApplyAnchor from "./ui/floating/useFloatingApplyAnchor";
 import { lazy, Suspense, useState } from "react";
-import FiltersModal from "./FiltersModal";
+import { useFilterRenderer } from "./ui/render/useFilterRenderer";
+import { FiltersSearch } from "./ui/panel-parts";
+import { AllFiltersButton, ApplyButton, ResetButton } from "./ui/actions";
+import { ApplyFiltersButton } from "./ui/floating";
+import { FiltersModal } from "./ui/panels";
 
-const FiltersSidebar = lazy(() => import("./FiltersSidebar"));
+const FiltersSidebar = lazy(() => import("./ui/panels/FiltersSidebar"));
 
 export default function FiltersContainer({q, patchQuery}) {
   const { wrapRef, btnTop, btnShow, showApplyAtEl, setBtnShow } = useFloatingApplyAnchor();
   const [isAllFiltersOpen, setIsAllFiltersOpen] = useState(false);
-  const toArray = (v) => v == null ? [] : Array.isArray(v) ? v : String(v).split(",");
 
+  const renderFilter = useFilterRenderer(q, patchQuery, { showApplyAtEl });
+  
   // const { data } = useFilters(params); // ← запрос стартует сразу
   const groups = [
     { id: '1',  title: "Основные", order: 1 },
@@ -26,9 +29,27 @@ export default function FiltersContainer({q, patchQuery}) {
 
   const filters = [
     {
-      value: "brand",
+      title: 'Рейтинг 4 и выше',
+      value: 'rating_4_>',
+      groupId: '2',
+      type: 'boolean',
+      order: 15,
+    },
+    {
+      title: 'Цена',
+      value: 'price',
+      groupId: '1',
+      type: 'range',
+      order: 1,
+      min: 1000,
+      max: 120000,
+      step: 1000,
+      unit: "₽",
+    },
+    {
       title: "Бренд",
-      groupId: 1,           
+      value: "brand",
+      groupId: '1',           
       type: "list",
       order: 10,
       showIn: ["sidebar","modal"],
@@ -41,7 +62,8 @@ export default function FiltersContainer({q, patchQuery}) {
       title: "Гарантия",
       value: 'Guarantee',
       order: 2,
-      groupId: 1,
+      groupId: '1',
+      type: "list",
       options: [
         { value: '1_god', label: '1 год'},
         { value: '2_god', label: '2 года'},
@@ -54,7 +76,8 @@ export default function FiltersContainer({q, patchQuery}) {
       title: "Сокет",
       value: "s[64s]",
       order: 1,
-      groupId: 3,
+      groupId: '3',
+      type: 'list',
       options: [
         { value: 'am5', label: 'AM5', count: 10},
         { value: 'am4', label: 'AM4'},
@@ -72,6 +95,7 @@ export default function FiltersContainer({q, patchQuery}) {
       value: "god_reliza",
       order: 1,
       groupId: 3,
+      type: 'list',        
       options: [
         { value: 'gfdgs', label: '201 500 500 500 600  0880  7546 53453 4353'},
         { value: 'dfgs', label: '202 201 500 500 500 600  0880  7546 53453 4353'},
@@ -103,7 +127,8 @@ export default function FiltersContainer({q, patchQuery}) {
       title: "Поколение процессоров",
       value: "f[6ig]",
       order: 1,
-      groupId: 3,
+      groupId: '3',
+      type: 'list',      
       options: [
         { value: '1q', label: 'AMD Ryzen 9000'},
         { value: '2w', label: 'AMD Ryzen 8000'},
@@ -129,7 +154,8 @@ export default function FiltersContainer({q, patchQuery}) {
       title: "Тип памяти",
       value: "q[gf4]",
       order: 1,
-      groupId: 6,
+      groupId: '6',
+      type: 'list',
       options: [
         { value: 'ddr3', label: 'DDR3'},
         { value: 'ddr3l', label: 'DDR3L'},
@@ -137,54 +163,26 @@ export default function FiltersContainer({q, patchQuery}) {
         { value: 'ddr5', label: 'DDR5'},
       ],
     },
+    {
+      title: "Количество производительных ядер",
+      value: "q[gf4]sdf",
+      order: 1,
+      groupId: '4',
+      type: 'list',
+      options: [
+        { value: '2', label: '2'},
+        { value: '4', label: '4'},
+        { value: '6', label: '6'},
+        { value: '8', label: '8'},
+        { value: '10', label: '10'},
+        { value: '12', label: '12'},
+        { value: '14', label: '14'},
+        { value: '16', label: '16'},
+        { value: '18', label: '18'},
+      ],
+    },
+
   ];
-
-  // const renderGroups = (variant) =>
-  //   filters.map((filter) => {
-  //     const selected = toArray(q[filter.value]);
-  //     const handleChange = (nextArr) => {
-  //       patchQuery({
-  //         [filter.value]: nextArr.length ? nextArr : undefined,
-  //         page: 1,
-  //       });
-  //     };
-
-  //     return (
-  //       <FiltersSidebar
-  //         key={filter.value}
-  //         title={filter.title}
-  //         options={filter.options}
-  //         value={selected}
-  //         onChange={handleChange}
-  //         defaultOpen={variant === "sidebar" ? false : selected.length > 0}
-  //         maxCollapsed={7}
-  //         showApplyAtEl={variant === "sidebar" ? showApplyAtEl : undefined}
-  //       />
-  //     );
-  //   });
-
-  const renderFilter = (filter, variant = "sidebar") => {
-    const selected = toArray(q[filter.value]);
-    const handleChange = (nextArr) => {
-      patchQuery({
-        [filter.value]: nextArr.length ? nextArr : undefined,
-        page: 1,
-      });
-    };
-
-    return (
-      <FiltersSidebar
-        key={filter.value}
-        title={filter.title}
-        options={filter.options}
-        value={selected}
-        onChange={handleChange}
-        defaultOpen={variant === "sidebar" ? false : selected.length > 0}
-        maxCollapsed={7}
-        showApplyAtEl={variant === "sidebar" ? showApplyAtEl : undefined}
-      />
-    );
-  };
 
   return (
     <div ref={wrapRef} className="relative gap-5 grid">
@@ -194,29 +192,9 @@ export default function FiltersContainer({q, patchQuery}) {
       </div>
       
       <div  className="bg-white rounded-lg overflow-hidden shadow">
-        {filters.map((filter) => {
-          const selected = toArray(q[filter.value]);
-          
-          const handleChange = (nextArr) => {
-            patchQuery({
-              [filter.value]: nextArr.length ? nextArr : undefined,
-              page: 1,
-            });
-          };
 
-          return (
-            <FiltersSidebar
-              key={filter.value}
-              title={filter.title}
-              options={filter.options}
-              value={selected}
-              onChange={handleChange} // ← получаем next + anchorEl
-              defaultOpen={false }
-              maxCollapsed={7}
-              showApplyAtEl={showApplyAtEl}
-            />
-          )
-        })}
+        <FiltersSidebar filters={filters} renderFilter={(f) => renderFilter(f, "sidebar")}/>
+
         {btnShow && (
           <ApplyFiltersButton
             top={btnTop}
@@ -225,30 +203,12 @@ export default function FiltersContainer({q, patchQuery}) {
         )}
 
         <div className="flex gap-2 flex-col m-5">
-          <button 
-            className="rounded-lg bg-orange-300 text-white h-[44px] transition
-              from-orange-400 to-orange-500 hover:from-orange-300 hover:to-orange-400 hover:outline-0 bg-gradient-to-b" 
-            onClick={() => { console.log("apply filters"); setBtnShow(false); }}
-          >
-            Применить
-          </button>
-
-          <button 
-            className="rounded-lg outline-1 outline-gray-300 h-[44px] hover:bg-gray-100 transition" 
-            onClick={() => { console.log("reset filters"); setBtnShow(false); }}
-          >
-            Сбросить
-          </button>
+          <ApplyButton/>
+          <ResetButton/>
         </div>
         
         <div className="flex flex-col mx-5 mb-5">
-          <button 
-            className="flex justify-center items-center text-blue-600 hover:text-orange-500 h-[44px] gap-2 transition align-middle outline-none"
-            onClick={() => { setIsAllFiltersOpen(true); setBtnShow(false); }}
-          >
-            <span>Все фильтры </span>
-            <span><ArrowRightIcon className="size-4"/></span>
-          </button>
+          <AllFiltersButton/>
         </div>
       </div>
 
@@ -260,6 +220,7 @@ export default function FiltersContainer({q, patchQuery}) {
         filters={filters}
         renderFilter={(f) => renderFilter(f, "modal")}
       />
+
     </div>
   );
 }

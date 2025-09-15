@@ -48,11 +48,11 @@ export default function FiltersModal({ open, onClose, title, initialFocusRef, gr
     };
   }, [open, initialFocusRef]);
 
-
   // --- refs для прокрутки
   const rightPaneRef = useRef(null);              // скроллируемый контейнер справа
   const sectionRefs = useRef({});                 // { [groupId]: HTMLElement }
   const [activeGroupId, setActiveGroupId] = useState(groupsSorted[0]?.id);
+  const suppressSpyUntilRef = useRef(0);          // подавляем scroll-spy после клика
 
   const scrollToGroup = (gid) => {
     const container = rightPaneRef.current;
@@ -60,6 +60,8 @@ export default function FiltersModal({ open, onClose, title, initialFocusRef, gr
     if (!container || !el) return;
     // точный скролл относительно контейнера (учитывает padding)
     const top = el.offsetTop - container.offsetTop;
+    // Подавляем scroll-spy, чтобы выбор не перебивался во время анимированного скролла
+    suppressSpyUntilRef.current = Date.now() + 700;
     container.scrollTo({ top, behavior: "smooth" });
     setActiveGroupId(gid);
   };
@@ -69,17 +71,22 @@ export default function FiltersModal({ open, onClose, title, initialFocusRef, gr
     const root = rightPaneRef.current;
     if (!root) return;
     const onScroll = () => {
+      // Игнорируем обновление активной секции, пока идёт программный скролл
+      if (Date.now() < suppressSpyUntilRef.current) return;
       const st = root.scrollTop;
-      let bestId, bestDist = Infinity;
-      groupsSorted.forEach(g => {
-        const gid = g.id;
-        const el = sectionRefs.current[gid];
-        if (!el) return;
+      // Выбираем последнюю секцию, чей верх находится выше/на уровне текущего скролла (+небольшой порог)
+      const threshold = 4; // px
+      let currentId = undefined;
+      for (const g of groupsSorted) {
+        const el = sectionRefs.current[g.id];
+        if (!el) continue;
         const top = el.offsetTop - root.offsetTop;
-        const dist = Math.abs(top - st);
-        if (dist < bestDist) { bestDist = dist; bestId = gid; }
-      });
-      if (bestId) setActiveGroupId(bestId);
+        if (top <= st + threshold) currentId = g.id;
+        else break;
+      }
+      // Если ни одна не прошла порог (самый верх), берем первую; если прокрутили до низа — будет последняя
+      if (!currentId && groupsSorted[0]) currentId = groupsSorted[0].id;
+      if (currentId) setActiveGroupId(currentId);
     };
     root.addEventListener("scroll", onScroll, { passive: true });
     onScroll(); // первичная инициализация
@@ -134,7 +141,7 @@ export default function FiltersModal({ open, onClose, title, initialFocusRef, gr
                         key={g.id ?? g.title} 
                         onClick={() => scrollToGroup(g.id)} 
                         className={clsx(" text-left block w-full rounded-md transition relative py-5 px-10", 
-                          activeGroupId == g.id ? 'text-orange-600 font-medium before:absolute before:border-2 before:h-full before:left-0 before:top-0' : '' 
+                          activeGroupId == g.id ? 'text-orange-600 font-medium before:absolute before:border-2 before:border-orange-500 before:h-full before:left-0 before:top-0' : '' 
                         )}
                       >
                         {g.title}

@@ -1,4 +1,4 @@
-import AnimatedCheckbox from "../../ui/AnimatedCheckbox";
+import AnimatedCheckbox from "../../../../ui/AnimatedCheckbox";
 
 export default function FiltersSelectAll({ show, allSelected, someSelected, onToggle, selectAllRef }) {
   if (!show) return null;

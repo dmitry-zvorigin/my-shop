@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { fetchProductAll } from '@/api/categories';
 import Breadcrumbs from '@/components/Common/Breadcrumbs';
-import FiltersSidebar from '@/components/Product/Filter/FiltersSidebar';
+import FiltersSidebar from '@/components/Product/Filter/ui/panels/FiltersSidebar';
 import ToolBar from '@/components/Product/Toolbar/Toolbar';
 import ProductList from '@/components/Product/ProductList/ProductList';
 
