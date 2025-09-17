@@ -19,7 +19,7 @@ export default function ListFilter({
   const [renderAll, setRenderAll] = useState(false);    // что реально рендерим в DOM: только первые или все
   const listRef = useRef(null);
   const selectAllRef = useRef(null);
-  // console.log();
+
   // высоты контейнера для плавной анимации
   const [hCollapsed, setHCollapsed] = useState(0);
   const [hExpanded, setHExpanded] = useState(0);
@@ -96,7 +96,7 @@ export default function ListFilter({
   if (hExpanded !== hE) setHExpanded(hE);
 
   return (
-    <div className="relative">
+    <div className="relative border-b-1 border-gray-300">
       {/* Заголовок/кнопка свёртки */}
       <FiltersHeader
         title={title}
@@ -106,7 +106,7 @@ export default function ListFilter({
       />
 
       {/* Тело */}
-      <div className="px-0">
+      <div>
         <div
           className={clsx(
             "overflow-hidden transition-[max-height] duration-300 ease-in-out",

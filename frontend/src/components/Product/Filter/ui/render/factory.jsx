@@ -11,6 +11,7 @@ export default function createFilterRenderer (q, patchQuery, extraProps = {}) {
     const value = adapter.get(q, filter.value);
 
     const onChange = (next) => {
+      // console.log(next);
       patchQuery({
         [filter.value]: adapter.set(next),
         page: 1,
@@ -31,9 +32,18 @@ export default function createFilterRenderer (q, patchQuery, extraProps = {}) {
       });
     }
     if (filter.type === 'boolean') {
-      common.options = filter ?? [];
+      common.options = filter.options ?? [];
     }
-    console.log(common);
+
+    if (filter.type === 'price') {
+      Object.assign(common, {
+        min: filter.min, max: filter.max, step: filter.step, unit: filter.unit
+      });
+      if (variant === 'sidebar' && extraProps.showApplyAtEl) {
+        common.showApplyAtEl = extraProps.showApplyAtEl;
+      }
+    }
+    // console.log(common);
     return <Comp key={filter.value} {...common} />
   }
 }

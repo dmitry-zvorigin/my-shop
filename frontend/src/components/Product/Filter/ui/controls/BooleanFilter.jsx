@@ -1,14 +1,18 @@
-import AnimatedCheckbox from "@/components/ui/AnimatedCheckbox";
 import clsx from "clsx";
+import { CheckboxRow } from "../primitives";
 
-export default function BooleanFilter({ label, value = false, onChange, options }) {
-  // console.log(options);
+export default function BooleanFilter({ title, value, onChange }) {
+
   return (
-    <section className="rounded-lg p-3">
-      <AnimatedCheckbox
+    <section
+      className="w-full flex items-center border-b-1 border-gray-300"
+    >
+      <CheckboxRow
         checked={!!value}
-        label={options.title}
+        label={title}
         onToggle={() => onChange(!value)}
+        className={"py-3 px-3"}
+        classText={"text-base"}
       />
     </section>
   );

@@ -15,6 +15,15 @@ function toNumOrNull(v) {
   return Number.isFinite(n) ? n : null;
 }
 
+// helpers
+const parseToken = (s) => {
+  const [a, b] = String(s).split("-");
+  const min = a === "" ? null : Number(a);
+  const max = b === "" ? null : Number(b);
+  return { min: Number.isNaN(min) ? null : min, max: Number.isNaN(max) ? null : max };
+};
+const toToken = (r) => `${r?.min ?? ""}-${r?.max ?? ""}`;
+
 /**
  * Адаптеры: q <-> UI
  * Каждый тип обязан иметь .get(q, key) и .set(uiValue) => string|undefined
@@ -49,6 +58,35 @@ export const adapters = {
       return `${left}${RANGE_SEPARATOR}${right}`;
     },
   },
+
+  price: {
+    get: (q, key) =>
+      q[key]
+        ? String(q[key])
+            .split(",")
+            .filter(Boolean)
+            .map(parseToken)
+        : [],
+    set: (arr) => {
+      const tokens = (arr ?? [])
+        .filter((r) => r && (r.min != null || r.max != null))
+        .map(toToken);
+      return tokens.length ? tokens.join(",") : undefined;
+    },
+  },
+  // price: {
+  //   get: (q, key) => {
+  //     const raw = String(q[key] ?? "");
+  //     const [min, max] = raw.split(RANGE_SEPARATOR);
+  //     return { min: toNumOrNull(min), max: toNumOrNull(max) };
+  //   },
+  //   set: (arr) => {
+  //     const tokens = (arr ?? [])
+  //       .filter((r) => r && (r.min != null || r.max != null))
+  //       .map(toToken);
+  //     return tokens.length ? tokens.join(",") : undefined;
+  //   },
+  // }
 };
 
 /**
@@ -84,6 +122,7 @@ export function isActive(q, filter) {
   if (filter.type === "list")    return Array.isArray(v) && v.length > 0;
   if (filter.type === "boolean") return !!v;
   if (filter.type === "range")   return (v?.min != null) || (v?.max != null);
+  if (filter.type === 'price')   return (v?.min != null) || (v?.max != null);
   return false;
 }
 

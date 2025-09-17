@@ -10,7 +10,7 @@ export default function FiltersHeader({ title, isOpen, hasSelection, onToggle })
       <ChevronUpIcon
         className={clsx("size-4 transition-transform", isOpen && "rotate-180", hasSelection && "text-orange-500")}
       />
-      <h2 className={clsx("text-base", isOpen ? "font-bold" : " ", hasSelection && "font-bold text-orange-500")}>{title}</h2>
+      <h2 className={clsx("text-base text-start", isOpen ? "font-bold" : " ", hasSelection && "font-bold text-orange-500")}>{title}</h2>
     </button>
   );
 }
